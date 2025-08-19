@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import database from '../../data/database.json';
-import AuthLayout from './AuthLayout'; // Import layout chung
+import AuthLayout from './AuthLayout';
 
 const Register = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -21,49 +19,43 @@ const Register = () => {
       return;
     }
 
-    const existingUser = database.users.find(user => user.email === email);
-    if (existingUser) {
-      setError('Email đã được sử dụng. Vui lòng chọn email khác.');
-      return;
-    }
+    try {
+      const response = await fetch('http://localhost:8000/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ fullName, email, password }),
+      });
 
-    // Logic để thêm người dùng mới (lưu ý: cách này chỉ mô phỏng, không an toàn cho production)
-    console.log('Đăng ký thành công!');
-    navigate('/login');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Đăng ký thất bại.');
+      }
+
+      alert('Đăng ký thành công! Bạn sẽ được chuyển đến trang đăng nhập.');
+      navigate('/login');
+
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
     <AuthLayout title="Đăng ký thành viên">
       <form onSubmit={handleRegister}>
-        <div className="row g-2 mb-3">
-          <div className="col-md">
-            <div className="form-floating">
-              <input
-                type="text"
-                className="form-control"
-                id="lastNameInput"
-                placeholder="Họ"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                required
-              />
-              <label htmlFor="lastNameInput">Họ</label>
-            </div>
-          </div>
-          <div className="col-md">
-            <div className="form-floating">
-              <input
-                type="text"
-                className="form-control"
-                id="firstNameInput"
-                placeholder="Tên"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                required
-              />
-              <label htmlFor="firstNameInput">Tên</label>
-            </div>
-          </div>
+        <div className="form-floating mb-3">
+          <input
+            type="text"
+            className="form-control"
+            id="fullNameInput"
+            placeholder="Họ và Tên"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            required
+          />
+          <label htmlFor="fullNameInput">Họ và Tên</label>
         </div>
         <div className="form-floating mb-3">
           <input

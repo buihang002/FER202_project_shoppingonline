@@ -2,7 +2,7 @@
   "users": [
     {
       "id": "60d21b4667d0d8992e610c88",
-       "username": "johndoe",
+      "username": "johndoe",
       "fullname": "John Doe",
       "email": "thangnguyen11112002@gmail.com",
       "password": "$2b$10$GHVNmgYB9W9RE2Fs6BCAsOeMl5ec.KjMQ8sOTHRmaak0yJ3qZGkBe",
@@ -14,7 +14,7 @@
     },
     {
       "id": "001",
-       "username": "Long",
+      "username": "Long",
       "fullname": "Long Le",
       "email": "lelong3304@gmail.com",
       "password": "123456",
@@ -23,6 +23,26 @@
       "action": "unlock",
       "createdAt": "2023-06-21T10:00:00.000Z",
       "updatedAt": "2025-07-24T07:12:57.150Z"
+    },
+    {
+      "id": "user-1755625229524",
+      "username": "lele",
+      "fullname": "Le Le",
+      "email": "lele@gmail.com",
+      "password": "$2b$10$X.Rf9iow8fJx1tfmhJYCqe4x/IkuET14YJVLWTE9zGAVubB6lsbS6",
+      "role": "buyer",
+      "createdAt": "2025-08-19T17:40:29.524Z",
+      "updatedAt": "2025-08-19T17:40:29.524Z"
+    },
+    {
+      "id": "user123",
+      "username": "seller",
+      "fullname": "seller",
+      "email": "seller@gmail.com",
+      "password": "123456",
+      "role": "seller",
+      "createdAt": "2025-08-19T17:40:29.524Z",
+      "updatedAt": "2025-08-19T17:40:29.524Z"
     }
   ],
   "addresses": [
@@ -79,7 +99,10 @@
   "conversations": [
     {
       "id": "6881e8b1ef7b120dda02fb6e",
-      "participants": ["60d21b4667d0d8992e610c88", "60d21b4667d0d8992e610c89"],
+      "participants": [
+        "60d21b4667d0d8992e610c88",
+        "60d21b4667d0d8992e610c89"
+      ],
       "unreadCount": {
         "60d21b4667d0d8992e610c88": 0,
         "60d21b4667d0d8992e610c89": 0

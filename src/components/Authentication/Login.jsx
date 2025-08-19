@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import database from '../../data/database.json';
-import AuthLayout from './AuthLayout'; // Import layout chung
+import AuthLayout from './AuthLayout';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -9,30 +8,47 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
 
-    const user = database.users.find(u => u.email === email);
+    try {
+      // Gửi yêu cầu đăng nhập đến backend tại địa chỉ http://localhost:8000/api/login
+      const response = await fetch('http://localhost:8000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (!user || user.password !== password) {
-      setError('Email hoặc mật khẩu không đúng.');
-      return;
-    }
+      const data = await response.json();
 
-    // Chuyển hướng dựa trên vai trò người dùng
-    switch (user.role) {
-      case 'admin':
-        navigate('/admin/dashboard');
-        break;
-      case 'seller':
-        navigate('/seller/dashboard');
-        break;
-      case 'buyer':
-        navigate('/buyer/dashboard');
-        break;
-      default:
-        setError('Vai trò người dùng không hợp lệ.');
+      if (!response.ok) {
+        // Nếu backend trả về lỗi, hiển thị thông báo
+        throw new Error(data.message || 'Đã có lỗi xảy ra.');
+      }
+
+      // Lưu thông tin người dùng (ví dụ: token) vào localStorage để duy trì đăng nhập
+      localStorage.setItem('authToken', data.token);
+      localStorage.setItem('userRole', data.role);
+
+      // Điều hướng dựa trên vai trò trả về từ backend
+      switch (data.role) {
+        case 'admin':
+          navigate('/admin/dashboard');
+          break;
+        case 'seller':
+          navigate('/seller/dashboard');
+          break;
+        case 'buyer':
+          navigate('/');
+          break;
+        default:
+          setError('Vai trò người dùng không hợp lệ.');
+      }
+    } catch (err) {
+      setError(err.message);
     }
   };
 
