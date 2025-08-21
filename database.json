@@ -2,10 +2,10 @@
   "users": [
     {
       "id": "60d21b4667d0d8992e610c88",
-       "username": "johndoe",
+      "username": "johndoe",
       "fullname": "John Doe",
       "email": "thangnguyen11112002@gmail.com",
-      "password": "$2b$10$GHVNmgYB9W9RE2Fs6BCAsOeMl5ec.KjMQ8sOTHRmaak0yJ3qZGkBe",
+      "password": "123456",
       "role": "buyer",
       "avatarURL": "https://example.com/avatars/john.jpg",
       "action": "unlock",
@@ -14,7 +14,7 @@
     },
     {
       "id": "001",
-       "username": "Long",
+      "username": "Long",
       "fullname": "Long Le",
       "email": "lelong3304@gmail.com",
       "password": "123456",
@@ -23,6 +23,38 @@
       "action": "unlock",
       "createdAt": "2023-06-21T10:00:00.000Z",
       "updatedAt": "2025-07-24T07:12:57.150Z"
+    },
+    {
+      "id": "user-1755671414188",
+      "username": "abc",
+      "fullname": "abcxyz",
+      "email": "abc@gmail.com",
+      "password": "123456",
+      "role": "buyer",
+      "createdAt": "2025-08-20T06:30:14.188Z",
+      "updatedAt": "2025-08-20T06:30:14.188Z"
+    },
+    {
+      "id": "user123",
+      "username": "seller",
+      "fullname": "seller",
+      "email": "seller@gmail.com",
+      "password": "123456",
+      "role": "seller",
+      "createdAt": "2025-08-19T17:40:29.524Z",
+      "updatedAt": "2025-08-19T17:40:29.524Z"
+    },
+    {
+      "id": "user-1755771900036",
+      "username": "hehe",
+      "fullname": "hehe",
+      "email": "hehe@gmail.com",
+      "password": "123456",
+      "role": "buyer",
+      "avatarURL": "https://example.com/avatars/default.jpg",
+      "action": "unlock",
+      "createdAt": "2025-08-21T10:25:00.036Z",
+      "updatedAt": "2025-08-21T10:25:00.036Z"
     }
   ],
   "addresses": [
@@ -79,7 +111,10 @@
   "conversations": [
     {
       "id": "6881e8b1ef7b120dda02fb6e",
-      "participants": ["60d21b4667d0d8992e610c88", "60d21b4667d0d8992e610c89"],
+      "participants": [
+        "60d21b4667d0d8992e610c88",
+        "60d21b4667d0d8992e610c89"
+      ],
       "unreadCount": {
         "60d21b4667d0d8992e610c88": 0,
         "60d21b4667d0d8992e610c89": 0

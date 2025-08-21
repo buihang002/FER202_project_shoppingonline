@@ -20,25 +20,43 @@ const Register = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ fullName, email, password }),
-      });
+      const checkEmailResponse = await fetch(`http://localhost:9999/users?email=${email}`);
+      const existingUsers = await checkEmailResponse.json();
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Đăng ký thất bại.');
+      if (existingUsers.length > 0) {
+        setError("Email đã tồn tại.");
+        return;
       }
 
-      alert('Đăng ký thành công! Bạn sẽ được chuyển đến trang đăng nhập.');
+      const newUser = {
+        id: `user-${Date.now()}`,
+        username: email.split('@')[0],
+        fullname: fullName,
+        email: email,
+        password: password,
+        role: 'buyer',
+        avatarURL: "https://example.com/avatars/default.jpg",
+        action: "unlock",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+
+      const createUserResponse = await fetch('http://localhost:9999/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newUser)
+      });
+
+      if (!createUserResponse.ok) {
+        throw new Error("Đăng ký thất bại.");
+      }
+
+      alert('Đăng ký thành công! Vui lòng đăng nhập.');
       navigate('/login');
 
     } catch (err) {
-      setError(err.message);
+      setError("Không thể kết nối tới server. Bạn đã chạy json-server chưa?");
+      console.error("Lỗi đăng ký:", err);
     }
   };
 
@@ -46,51 +64,19 @@ const Register = () => {
     <AuthLayout title="Đăng ký thành viên">
       <form onSubmit={handleRegister}>
         <div className="form-floating mb-3">
-          <input
-            type="text"
-            className="form-control"
-            id="fullNameInput"
-            placeholder="Họ và Tên"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            required
-          />
+          <input type="text" className="form-control" id="fullNameInput" placeholder="Họ và Tên" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
           <label htmlFor="fullNameInput">Họ và Tên</label>
         </div>
         <div className="form-floating mb-3">
-          <input
-            type="email"
-            className="form-control"
-            id="emailInput"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <input type="email" className="form-control" id="emailInput" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           <label htmlFor="emailInput">Email</label>
         </div>
         <div className="form-floating mb-3">
-          <input
-            type="password"
-            className="form-control"
-            id="passwordInput"
-            placeholder="Mật khẩu"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <input type="password" className="form-control" id="passwordInput" placeholder="Mật khẩu" value={password} onChange={(e) => setPassword(e.target.value)} required />
           <label htmlFor="passwordInput">Mật khẩu</label>
         </div>
         <div className="form-floating mb-3">
-          <input
-            type="password"
-            className="form-control"
-            id="confirmPasswordInput"
-            placeholder="Nhập lại mật khẩu"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
+          <input type="password" className="form-control" id="confirmPasswordInput" placeholder="Nhập lại mật khẩu" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
           <label htmlFor="confirmPasswordInput">Nhập lại mật khẩu</label>
         </div>
 

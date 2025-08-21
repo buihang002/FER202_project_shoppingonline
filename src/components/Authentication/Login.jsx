@@ -13,42 +13,34 @@ const Login = () => {
     setError('');
 
     try {
-      // Gửi yêu cầu đăng nhập đến backend tại địa chỉ http://localhost:8000/api/login
-      const response = await fetch('http://localhost:8000/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      // Gửi yêu cầu đến json-server để tìm user có email và mật khẩu trùng khớp
+      const response = await fetch(`http://localhost:9999/users?email=${email}&password=${password}`);
+      const users = await response.json();
 
-      const data = await response.json();
+      if (users.length > 0) {
+        const user = users[0];
+        localStorage.setItem('currentUser', JSON.stringify(user));
 
-      if (!response.ok) {
-        // Nếu backend trả về lỗi, hiển thị thông báo
-        throw new Error(data.message || 'Đã có lỗi xảy ra.');
-      }
-
-      // Lưu thông tin người dùng (ví dụ: token) vào localStorage để duy trì đăng nhập
-      localStorage.setItem('authToken', data.token);
-      localStorage.setItem('userRole', data.role);
-
-      // Điều hướng dựa trên vai trò trả về từ backend
-      switch (data.role) {
-        case 'admin':
-          navigate('/admin/dashboard');
-          break;
-        case 'seller':
-          navigate('/seller/dashboard');
-          break;
-        case 'buyer':
-          navigate('/');
-          break;
-        default:
-          setError('Vai trò người dùng không hợp lệ.');
+        // Điều hướng dựa trên vai trò
+        switch (user.role) {
+          case 'admin':
+            navigate('/admin/dashboard');
+            break;
+          case 'seller':
+            navigate('/seller/dashboard');
+            break;
+          case 'buyer':
+            navigate('/'); // Chuyển hướng về trang chủ
+            break;
+          default:
+            navigate('/'); // Mặc định cũng về trang chủ
+        }
+      } else {
+        setError("Email hoặc mật khẩu không đúng");
       }
     } catch (err) {
-      setError(err.message);
+      setError("Không thể kết nối tới server. Bạn đã chạy json-server chưa?");
+      console.error("Lỗi đăng nhập:", err);
     }
   };
 
@@ -56,27 +48,11 @@ const Login = () => {
     <AuthLayout title="Đăng nhập vào tài khoản">
       <form onSubmit={handleLogin}>
         <div className="form-floating mb-3">
-          <input
-            type="email"
-            className="form-control"
-            id="emailInput"
-            placeholder="name@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <input type="email" className="form-control" id="emailInput" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           <label htmlFor="emailInput">Email</label>
         </div>
         <div className="form-floating mb-3">
-          <input
-            type="password"
-            className="form-control"
-            id="passwordInput"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <input type="password" className="form-control" id="passwordInput" placeholder="Mật khẩu" value={password} onChange={(e) => setPassword(e.target.value)} required />
           <label htmlFor="passwordInput">Mật khẩu</label>
         </div>
         
@@ -86,9 +62,6 @@ const Login = () => {
           <button type="submit" className="btn btn-primary btn-lg">Đăng nhập</button>
         </div>
       </form>
-      <div className="text-center">
-        <Link to="/forgot-password">Quên mật khẩu?</Link>
-      </div>
       <hr className="my-4" />
       <div className="d-grid">
         <p className="text-center text-muted">Chưa có tài khoản?</p>
