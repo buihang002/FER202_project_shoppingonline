@@ -17,6 +17,7 @@ import {
 // Import các component con
 import ProductList from "../ManageProduct/ProductList.jsx";
 import ViewDetails from "../ManageProduct/ViewDetailProduct.jsx";
+import CreateProduct from "../ManageProduct/AddProduct.jsx";
 
 const drawerWidth = 240;
 

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Col, Container, Row, Pagination } from 'react-bootstrap';
+import { Col, Container, Row, Pagination, Modal } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import { Plus } from "react-bootstrap-icons";
+import CreateProduct from './AddProduct.jsx'; 
 
 function ListProduct({ onViewDetails }) {
   const [products, setProducts] = useState([]);
@@ -10,11 +12,14 @@ function ListProduct({ onViewDetails }) {
   const [search, setSearch] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  // Phân trang
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 8;
 
-  // Lấy dữ liệu từ API
+  // Modal state
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const handleOpenCreate = () => setShowCreateModal(true);
+  const handleCloseCreate = () => setShowCreateModal(false);
+
   useEffect(() => {
     axios.get('http://localhost:9999/products')
       .then(res => setProducts(res.data))
@@ -25,16 +30,14 @@ function ListProduct({ onViewDetails }) {
       .catch(err => console.log(err));
   }, []);
 
-  // Lọc theo search
   useEffect(() => {
     const filtered = products.filter(product =>
       product.title.toLowerCase().includes(search.toLowerCase())
     );
     setFilteredProducts(filtered);
-    setCurrentPage(1); // Reset về trang đầu khi search
+    setCurrentPage(1);
   }, [products, search]);
 
-  // Tính toán phân trang
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
@@ -71,7 +74,6 @@ function ListProduct({ onViewDetails }) {
     <Pagination className="justify-content-center mt-4">
       <Pagination.First onClick={() => setCurrentPage(1)} disabled={currentPage === 1} />
       <Pagination.Prev onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1} />
-
       {[...Array(totalPages)].map((_, index) => (
         <Pagination.Item
           key={index + 1}
@@ -81,32 +83,59 @@ function ListProduct({ onViewDetails }) {
           {index + 1}
         </Pagination.Item>
       ))}
-
       <Pagination.Next onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} />
       <Pagination.Last onClick={() => setCurrentPage(totalPages)} disabled={currentPage === totalPages} />
     </Pagination>
   );
 
   return (
-    <Container>
-      <Row>
-        <Col md={12}>
-          <div style={{ display: "flex", justifyContent: "center", margin: "20px 0" }}>
-            <input
-              type="text"
-              placeholder="Search by title..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              style={{ width: "70%", padding: "8px" }}
-            />
-          </div>
-          <Row>
-            {renderProducts()}
-          </Row>
-          {renderPagination()}
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <Container>
+        <Row className="mb-3">
+          <Button
+            variant="success"
+            style={{ display: "flex", alignItems: "center", gap: "5px", width: '15%' }}
+            onClick={handleOpenCreate}
+          >
+            <Plus /> Create Product
+          </Button>
+        </Row>
+
+        <Row>
+          <Col md={12}>
+            <div style={{ display: "flex", justifyContent: "center", margin: "20px 0" }}>
+              <input
+                type="text"
+                placeholder="Search by title..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                style={{ width: "70%", padding: "8px" }}
+              />
+            </div>
+            <Row>
+              {renderProducts()}
+            </Row>
+            {renderPagination()}
+          </Col>
+        </Row>
+      </Container>
+
+      {/* Modal Create Product */}
+      <Modal
+        show={showCreateModal}
+        onHide={handleCloseCreate}
+        size="lg"
+        centered
+        backdrop="static"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Create New Product</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ maxHeight: '80vh', overflowY: 'auto' }}>
+          <CreateProduct onClose={handleCloseCreate} />
+        </Modal.Body>
+      </Modal>
+    </>
   );
 }
 
