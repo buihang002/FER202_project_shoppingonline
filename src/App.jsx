@@ -5,7 +5,7 @@ import Home from './pages/Home.jsx';
 import Login from './components/Authentication/Login.jsx';
 import Register from './components/Authentication/Register.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
-import SellerDashboard from './pages/SellerDashboard.jsx';
+import SellerDashboard from './components/Seller/ManageDashboardSeller/SellerDashboard.jsx';
 
 function App() {
   return (
