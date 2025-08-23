@@ -35,7 +35,7 @@
       "updatedAt": "2025-08-20T06:30:14.188Z"
     },
     {
-      "id": "user123",
+      "id": "seller-1755674029524",
       "username": "seller",
       "fullname": "seller",
       "email": "seller@gmail.com",
@@ -104,6 +104,27 @@
       "id": "60d21b4667d0d8992e610c85",
       "name": "Electronics",
       "description": "Electronic devices and accessories",
+      "createdAt": "2023-06-20T10:00:00.000Z",
+      "updatedAt": "2023-06-20T10:00:00.000Z"
+    },
+    {
+      "id": "60d21b4667d0d8992e610c86",
+      "name": "Fashion",
+      "description": "Clothing, shoes, and accessories",
+      "createdAt": "2023-06-20T10:00:00.000Z",
+      "updatedAt": "2023-06-20T10:00:00.000Z"
+    },
+    {
+      "id": "60d21b4667d0d8992e610c87",
+      "name": "Home & Garden",
+      "description": "Furniture, decor, and gardening supplies",
+      "createdAt": "2023-06-20T10:00:00.000Z",
+      "updatedAt": "2023-06-20T10:00:00.000Z"
+    },
+    {
+      "id": "60d21b4667d0d8992e610c88",
+      "name": "Books",
+      "description": "Fiction, non-fiction, and educational books",
       "createdAt": "2023-06-20T10:00:00.000Z",
       "updatedAt": "2023-06-20T10:00:00.000Z"
     }
@@ -217,12 +238,87 @@
       "description": "Latest smartphone with advanced features",
       "price": 1000,
       "image": "https://cdn.tgdd.vn/Products/Images/42/114115/iphone-x-64gb-bac-750x500.png",
-      "categoryId": "60d21b4667d0d8992e610c85",
-      "sellerId": "60d21b4667d0d8992e610c89",
+      "categoryId": "`60d21b4667d0d8992e610c85`",
+      "sellerId": "seller-1755674029524",
       "isAuction": true,
       "auctionEndTime": null,
       "createdAt": "2023-06-23T10:30:00.000Z",
       "updatedAt": "2025-07-24T15:07:27.359Z"
+    },
+    {
+      "id": "60d21b4667d0d8992e610c8e",
+      "title": "Laptop Gaming Pro",
+      "description": "High-performance laptop for professionals",
+      "price": 1500,
+      "image": "https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/44/337841/gigabyte-aorus-master-16-ultra-9-16-byhc5vne64sh-6-638826857947487123-750x500.jpg",
+      "categoryId": "60d21b4667d0d8992e610c85",
+      "sellerId": "seller-1755674029524",
+      "isAuction": true,
+      "auctionEndTime": "2023-07-01T12:00:00.000Z",
+      "createdAt": "2023-06-23T10:30:00.000Z",
+      "updatedAt": "2023-06-23T10:30:00.000Z"
+    },
+    {
+      "id": "60d21b4667d0d8992e610c8f",
+      "title": "Wireless Headphones",
+      "description": "Noise-cancelling wireless headphones",
+      "price": 200,
+      "image": "https://cdn.tgdd.vn/Products/Images/54/327554/tai-nghe-bluetooth-true-wireless-samsung-galaxy-buds-3-pro-r630n-xam-1-750x500.jpg",
+      "categoryId": "60d21b4667d0d8992e610c85",
+      "sellerId": "seller-1755674029524",
+      "isAuction": false,
+      "auctionEndTime": null,
+      "createdAt": "2023-06-23T10:30:00.000Z",
+      "updatedAt": "2023-06-23T10:30:00.000Z"
+    },
+    {
+      "id": "60d21b4667d0d8992e610c90",
+      "title": "4K TV",
+      "description": "Ultra HD 4K television with smart features",
+      "price": 1200,
+      "image": "https://cdnv2.tgdd.vn/mwg-static/dmx/Products/Images/1942/322673/tivi-qled-samsung-4k-65-inch-qa65q65d-1-638687436771499863-700x467.jpg",
+      "categoryId": "60d21b4667d0d8992e610c85",
+      "sellerId": "seller-1755674029524",
+      "isAuction": false, 
+      "createdAt": "2023-06-23T10:30:00.000Z",
+      "updatedAt": "2023-06-23T10:30:00.000Z"
+    },
+    {
+      "id": "60d21b4667d0d8992e610c91",
+      "title": "Drangon Ball Z",
+      "description": "Complete collection of Dragon Ball Z manga",
+      "price": 30,
+      "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgKY0yfMO5mWtwNyjvaxT09zrzvP_Ur0a95883_ZxxFqKO4KCUGbnQVs52JyLpPA2kcixfLuY81yQ8oDpBQ6SEzLe1GBq8MZZC9Sk1sXulUx7imOLJJ9kjdBVBOenW8Yo9eI8yVtDBuiKu4iXrHDSImGGHd58yKq_9NrB4K4IQy26k4dgwesJ2RcrgQG3s/s2043/DBS-v20-p001%20copy.jpg",
+      "categoryId": "60d21b4667d0d8992e610c88",
+      "sellerId": "seller-1755674029524",
+      "isAuction": false,
+      "auctionEndTime": null,
+      "createdAt": "2023-06-23T10:30:00.000Z",
+      "updatedAt": "2023-06-23T10:30:00.000Z"
+    },
+    {
+      "id": "60d21b4667d0d8992e610c92",
+      "title": "T-Shirt",
+      "description": "Comfortable cotton t-shirt",
+      "price": 120,
+      "image": "https://product.hstatic.net/200000018520/product/e5746d4022a74fcbaba90e8649d6a6f6_1a177d8e4d1b47b3bc7ab780192ef8eb_grande.jpg",
+      "categoryId": "60d21b4667d0d8992e610c86",
+      "sellerId": "seller-1755674029524",
+      "isAuction": false, 
+      "createdAt": "2023-06-23T10:30:00.000Z",
+      "updatedAt": "2023-06-23T10:30:00.000Z"
+    },
+    {
+      "id": "60d21b4667d0d8992e610c93",
+      "title": "Blender",
+      "description": "High-speed kitchen blender",
+      "price": 80,
+      "image": "https://res.cloudinary.com/sharkninja-na/image/upload/c_fit,h_600,w_600/v1/SharkNinja-NA/TB201C_07?_a=BAKAACDX0",
+      "categoryId": "60d21b4667d0d8992e610c87",
+      "sellerId": "seller-1755674029524",
+      "isAuction": false, 
+      "createdAt": "2023-06-23T10:30:00.000Z",
+      "updatedAt": "2023-06-23T10:30:00.000Z"
     }
   ],
   "returnRequests": [
