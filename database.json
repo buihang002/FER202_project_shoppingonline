@@ -140,7 +140,7 @@
     {
       "id": "60d21b4667d0d8992e610c99",
       "userId": "60d21b4667d0d8992e610c88",
-      "productId": "60d21b4667d0d8992e610c8e",
+      "productId": null,
       "bidAmount": 1350,
       "bidDate": "2023-06-28T16:45:00.000Z",
       "isWinningBid": false,
@@ -258,7 +258,7 @@
   "inventories": [
     {
       "id": "6881ea11ef7b120dda030b83",
-      "productId": "60d21b4667d0d8992e610c8d",
+      "productId": null,
       "quantity": 100,
       "lastUpdated": "2025-07-24T03:44:52.900Z",
       "createdAt": "2025-07-15T16:09:03.792Z",
@@ -304,19 +304,6 @@
   ],
   "products": [
     {
-      "id": "60d21b4667d0d8992e610c8d",
-      "title": "Smartphone X",
-      "description": "Latest smartphone with advanced features",
-      "price": 1000,
-      "image": "https://cdn.tgdd.vn/Products/Images/42/114115/iphone-x-64gb-bac-750x500.png",
-      "categoryId": "60d21b4667d0d8992e610c85",
-      "sellerId": "seller-1755674029524",
-      "isAuction": true,
-      "auctionEndTime": null,
-      "createdAt": "2023-06-23T10:30:00.000Z",
-      "updatedAt": "2025-07-24T15:07:27.359Z"
-    },
-    {
       "id": "9ead",
       "title": "Ninh An Như Mộng",
       "description": "Phim này hay nè",
@@ -345,81 +332,6 @@
       "price": 200,
       "categoryId": "5e7b",
       "image": "https://www.cleanipedia.com/images/5iwkm8ckyw6v/p2e3c7e3V9nSuIIlfPdsW/1eb9893e6216a2066186d3db03c78cf8/MS05Ny5qcGc/1200w/qu%E1%BA%A7n-%C3%A1o-%C4%91%C6%B0%E1%BB%A3c-treo-g%E1%BB%8Dn-g%C3%A0ng-tr%C3%AAn-m%C3%B3c..jpg"
-    },
-    {
-      "id": "60d21b4667d0d8992e610c8e",
-      "title": "Laptop Gaming Pro",
-      "description": "High-performance laptop for professionals",
-      "price": 1500,
-      "image": "https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/44/337841/gigabyte-aorus-master-16-ultra-9-16-byhc5vne64sh-6-638826857947487123-750x500.jpg",
-      "categoryId": "60d21b4667d0d8992e610c85",
-      "sellerId": "seller-1755674029524",
-      "isAuction": true,
-      "auctionEndTime": "2023-07-01T12:00:00.000Z",
-      "createdAt": "2023-06-23T10:30:00.000Z",
-      "updatedAt": "2023-06-23T10:30:00.000Z"
-    },
-    {
-      "id": "60d21b4667d0d8992e610c8f",
-      "title": "Wireless Headphones",
-      "description": "Noise-cancelling wireless headphones",
-      "price": 200,
-      "image": "https://cdn.tgdd.vn/Products/Images/54/327554/tai-nghe-bluetooth-true-wireless-samsung-galaxy-buds-3-pro-r630n-xam-1-750x500.jpg",
-      "categoryId": "60d21b4667d0d8992e610c85",
-      "sellerId": "seller-1755674029524",
-      "isAuction": false,
-      "auctionEndTime": null,
-      "createdAt": "2023-06-23T10:30:00.000Z",
-      "updatedAt": "2023-06-23T10:30:00.000Z"
-    },
-    {
-      "id": "60d21b4667d0d8992e610c90",
-      "title": "4K TV",
-      "description": "Ultra HD 4K television with smart features",
-      "price": 1200,
-      "image": "https://cdnv2.tgdd.vn/mwg-static/dmx/Products/Images/1942/322673/tivi-qled-samsung-4k-65-inch-qa65q65d-1-638687436771499863-700x467.jpg",
-      "categoryId": "60d21b4667d0d8992e610c85",
-      "sellerId": "seller-1755674029524",
-      "isAuction": false,
-      "createdAt": "2023-06-23T10:30:00.000Z",
-      "updatedAt": "2023-06-23T10:30:00.000Z"
-    },
-    {
-      "id": "60d21b4667d0d8992e610c91",
-      "title": "Drangon Ball Z",
-      "description": "Complete collection of Dragon Ball Z manga",
-      "price": 30,
-      "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgKY0yfMO5mWtwNyjvaxT09zrzvP_Ur0a95883_ZxxFqKO4KCUGbnQVs52JyLpPA2kcixfLuY81yQ8oDpBQ6SEzLe1GBq8MZZC9Sk1sXulUx7imOLJJ9kjdBVBOenW8Yo9eI8yVtDBuiKu4iXrHDSImGGHd58yKq_9NrB4K4IQy26k4dgwesJ2RcrgQG3s/s2043/DBS-v20-p001%20copy.jpg",
-      "categoryId": "60d21b4667d0d8992e610c88",
-      "sellerId": "seller-1755674029524",
-      "isAuction": false,
-      "auctionEndTime": null,
-      "createdAt": "2023-06-23T10:30:00.000Z",
-      "updatedAt": "2023-06-23T10:30:00.000Z"
-    },
-    {
-      "id": "60d21b4667d0d8992e610c92",
-      "title": "T-Shirt",
-      "description": "Comfortable cotton t-shirt",
-      "price": 120,
-      "image": "https://product.hstatic.net/200000018520/product/e5746d4022a74fcbaba90e8649d6a6f6_1a177d8e4d1b47b3bc7ab780192ef8eb_grande.jpg",
-      "categoryId": "60d21b4667d0d8992e610c86",
-      "sellerId": "seller-1755674029524",
-      "isAuction": false,
-      "createdAt": "2023-06-23T10:30:00.000Z",
-      "updatedAt": "2023-06-23T10:30:00.000Z"
-    },
-    {
-      "id": "60d21b4667d0d8992e610c93",
-      "title": "Blender",
-      "description": "High-speed kitchen blender",
-      "price": 80,
-      "image": "https://res.cloudinary.com/sharkninja-na/image/upload/c_fit,h_600,w_600/v1/SharkNinja-NA/TB201C_07?_a=BAKAACDX0",
-      "categoryId": "60d21b4667d0d8992e610c87",
-      "sellerId": "seller-1755674029524",
-      "isAuction": false,
-      "createdAt": "2023-06-23T10:30:00.000Z",
-      "updatedAt": "2023-06-23T10:30:00.000Z"
     }
   ],
   "returnRequests": [
@@ -436,7 +348,7 @@
   "reviews": [
     {
       "id": "6881ea71ef7b120dda030b86",
-      "productId": "60d21b4667d0d8992e610c8d",
+      "productId": null,
       "reviewerId": "60d21b4667d0d8992e610c88",
       "rating": 5,
       "comment": "Excellent product, very satisfied with the purchase!",
