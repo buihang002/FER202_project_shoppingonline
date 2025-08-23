@@ -8,7 +8,7 @@ import Register from './components/Authentication/Register.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import SellerDashboard from './components/Seller/ManageDashboardSeller/SellerDashboard.jsx';
 import ListProduct from './components/Seller/ManageProduct/ProductList.jsx';
-import SellerDashboard from './pages/SellerDashboard.jsx';
+// import SellerDashboard from './pages/SellerDashboard.jsx';
 import Admin from './components/Admin/Admin.jsx';
 import ManageAccount from './components/Admin/ManageAccount/ManageAccount.jsx';
 import ManageProduct from './components/Admin/ManageProduct.jsx';
