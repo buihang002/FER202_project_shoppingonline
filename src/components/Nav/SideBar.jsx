@@ -1,7 +1,7 @@
 import React from "react";
 import { Nav, Button } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FiHome, FiUsers, FiBox, FiLogOut } from "react-icons/fi";
+import { FiHome, FiUsers, FiBox, FiLogOut, FiClock } from "react-icons/fi";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -11,6 +11,7 @@ const Sidebar = () => {
     { name: "Dashboard", path: "/admin/dashboard", icon: <FiHome /> },
     { name: "Manage Account", path: "/admin/account", icon: <FiUsers /> },
     { name: "Manage Product", path: "/admin/product", icon: <FiBox /> },
+    { name: "Pending Seller", path: "/admin/pending-seller", icon: <FiClock /> },
   ];
 
   const handleLogout = () => {
@@ -42,7 +43,6 @@ const Sidebar = () => {
           </Nav.Link>
         ))}
       </Nav>
-
 
       <div className="mt-auto d-flex flex-column">
         <Button

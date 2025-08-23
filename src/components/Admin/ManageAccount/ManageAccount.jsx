@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Modal, Form, Container, Alert, Row, Col, InputGroup } from "react-bootstrap";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Container,
+  Alert,
+  Row,
+  Col,
+  InputGroup,
+} from "react-bootstrap";
+import { FiSearch } from "react-icons/fi";
 
 const API_URL = "http://localhost:9999/users";
 
@@ -11,7 +22,7 @@ const initialForm = {
   password: "",
   role: "",
   avatarURL: "",
-  action: "unlock",
+  status: "",
   createdAt: "",
   updatedAt: "",
 };
@@ -20,12 +31,14 @@ const ManageAccount = () => {
   const [users, setUsers] = useState([]);
   const [form, setForm] = useState(initialForm);
   const [showModal, setShowModal] = useState(false);
-  const [modalMode, setModalMode] = useState(null); // "create" | "details"
+  const [modalMode, setModalMode] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState("");
+  const [alertMsg, setAlertMsg] = useState({ type: "", text: "", time: "2" });
   const [searchText, setSearchText] = useState("");
   const [filterRole, setFilterRole] = useState("all");
-  const [filterAction, setFilterAction] = useState("all");
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [emailError, setEmailError] = useState("");
 
   const isCreate = modalMode === "create";
   const isView = modalMode === "details" && !isEditing;
@@ -67,26 +80,50 @@ const ManageAccount = () => {
     setModalMode(null);
     setForm({ ...initialForm });
     setError("");
+    setEmailError("");
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+
+    // validate email in real-time
+    if (name === "email") {
+      if (!value.trim()) {
+        setEmailError("Email cannot be empty.");
+      } else if (!/\S+@\S+\.\S+/.test(value)) {
+        setEmailError("Invalid email format.");
+      } else {
+        // check duplicate email
+        const isDuplicate = users.some(
+          (u) =>
+            u.email.toLowerCase() === value.toLowerCase() && u.id !== form.id
+        );
+        if (isDuplicate) {
+          setEmailError("Email already exists.");
+        } else {
+          setEmailError("");
+        }
+      }
+    }
   };
 
   const validateForm = () => {
-    if (!form.username || !form.fullname || !form.email || !form.password || !form.role) {
-      return "Vui lòng nhập đầy đủ thông tin bắt buộc.";
-    }
-    const duplicate = users.find(
+    if (!form.fullname.trim()) return "Fullname cannot be empty.";
+    if (!form.email.trim()) return "Email cannot be empty.";
+    if (!/\S+@\S+\.\S+/.test(form.email)) return "Invalid email format.";
+
+    // check duplicate email
+    const isDuplicate = users.some(
       (u) =>
-        (u.username === form.username ||
-          u.fullname === form.fullname ||
-          u.email === form.email ||
-          u.avatarURL === form.avatarURL) &&
-        u.id !== form.id
+        u.email.toLowerCase() === form.email.toLowerCase() && u.id !== form.id
     );
-    if (duplicate) return "Thông tin bị trùng với người dùng khác.";
+    if (isDuplicate) return "Email already exists.";
+
+    if (isCreate && !form.password.trim()) return "Password cannot be empty.";
+    if (isCreate && form.password.length < 6)
+      return "Password must be at least 6 characters.";
+    if (!form.role) return "Please select a role.";
     return "";
   };
 
@@ -96,12 +133,29 @@ const ManageAccount = () => {
       setError(err);
       return;
     }
+    if (emailError) {
+      setError(emailError);
+      return;
+    }
 
     const now = new Date().toISOString();
     const generatedId =
-      form.id ?? (typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : Date.now().toString());
+      form.id ??
+      (typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : Date.now().toString());
 
-    const newUser = { ...form, id: generatedId, createdAt: now, updatedAt: now, action: form.action || "unlock" };
+    let status = "active";
+    if (form.role === "seller") status = "pending";
+    else if (form.role === "admin") status = "approved";
+
+    const newUser = {
+      ...form,
+      id: generatedId,
+      createdAt: now,
+      updatedAt: now,
+      status,
+    };
 
     try {
       await fetch(API_URL, {
@@ -109,15 +163,27 @@ const ManageAccount = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newUser),
       });
+      setAlertMsg({ type: "success", text: "User added successfully!" });
       closeModal();
       fetchUsers();
     } catch (err) {
+      setAlertMsg({ type: "danger", text: "Error while adding user." });
       console.error("Create user error:", err);
     }
   };
 
   const handleUpdate = async () => {
     if (!form.id) return;
+    const err = validateForm();
+    if (err) {
+      setError(err);
+      return;
+    }
+    if (emailError) {
+      setError(emailError);
+      return;
+    }
+
     const payload = { ...form, updatedAt: new Date().toISOString() };
     try {
       await fetch(`${API_URL}/${form.id}`, {
@@ -125,53 +191,72 @@ const ManageAccount = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+      setAlertMsg({ type: "success", text: "User updated successfully!" });
       closeModal();
       fetchUsers();
     } catch (err) {
+      setAlertMsg({ type: "danger", text: "Error while updating user." });
       console.error("Update user error:", err);
     }
   };
 
   const handleDelete = async () => {
     if (!form.id) return;
-    if (!window.confirm("Bạn có chắc muốn xóa người dùng này?")) return;
+    if (!window.confirm("Are you sure you want to delete this user?")) return;
     try {
       await fetch(`${API_URL}/${form.id}`, { method: "DELETE" });
+      setAlertMsg({ type: "warning", text: "User deleted." });
       closeModal();
       fetchUsers();
     } catch (err) {
+      setAlertMsg({ type: "danger", text: "Error while deleting user." });
       console.error("Delete user error:", err);
     }
   };
 
   const filteredUsers = users.filter((u) => {
     const matchesSearch =
-      u.username.toLowerCase().includes(searchText.toLowerCase()) ||
       u.fullname.toLowerCase().includes(searchText.toLowerCase()) ||
       u.email.toLowerCase().includes(searchText.toLowerCase());
     const matchesRole = filterRole === "all" || u.role === filterRole;
-    const matchesAction = filterAction === "all" || u.action === filterAction;
-    return matchesSearch && matchesRole && matchesAction;
+    const matchesStatus = filterStatus === "all" || u.status === filterStatus;
+    return matchesSearch && matchesRole && matchesStatus;
   });
 
   return (
-    <Container className="mt-1">
-      <h2 className="mb-4 text-primary">Account Management</h2>
+    <Container className="mt-3 position-relative">
+      <h2 className="mb-4  fw-bold">Account Management</h2>
 
+      {alertMsg.text && (
+        <Alert
+          variant={alertMsg.type}
+          onClose={() => setAlertMsg({ type: "", text: "" })}
+          dismissible
+          className="position-absolute top-0 end-0 m-3 shadow"
+          style={{ zIndex: 9999, minWidth: "250px" }}
+        >
+          {alertMsg.text}
+        </Alert>
+      )}
+
+      {/* search + filter */}
       <Row className="mb-4 g-3 align-items-center">
         <Col md={4}>
           <InputGroup>
-            <InputGroup.Text>🔍</InputGroup.Text>
+            <InputGroup.Text><FiSearch size={18} /></InputGroup.Text>
             <Form.Control
               type="text"
-              placeholder="Search by username, fullname, email..."
+              placeholder="Search by fullname, email..."
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
             />
           </InputGroup>
         </Col>
         <Col md={3}>
-          <Form.Select value={filterRole} onChange={(e) => setFilterRole(e.target.value)}>
+          <Form.Select
+            value={filterRole}
+            onChange={(e) => setFilterRole(e.target.value)}
+          >
             <option value="all">All Roles</option>
             <option value="admin">Admin</option>
             <option value="seller">Seller</option>
@@ -179,10 +264,15 @@ const ManageAccount = () => {
           </Form.Select>
         </Col>
         <Col md={3}>
-          <Form.Select value={filterAction} onChange={(e) => setFilterAction(e.target.value)}>
-            <option value="all">All Actions</option>
-            <option value="unlock">Unlock</option>
-            <option value="lock">Lock</option>
+          <Form.Select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
+            <option value="all">All Status</option>
+            <option value="active">Active</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
           </Form.Select>
         </Col>
         <Col md={2}>
@@ -192,15 +282,20 @@ const ManageAccount = () => {
         </Col>
       </Row>
 
-      <Table bordered hover responsive className="shadow-sm bg-white rounded">
+      {/* table */}
+      <Table
+        bordered
+        hover
+        responsive
+        className="shadow-sm bg-white rounded text-center align-middle"
+      >
         <thead className="table-primary">
           <tr>
             <th>#</th>
-            <th>Username</th>
             <th>Fullname</th>
             <th>Email</th>
             <th>Role</th>
-            <th>Action</th>
+            <th>Status</th>
             <th>Details</th>
           </tr>
         </thead>
@@ -208,21 +303,42 @@ const ManageAccount = () => {
           {filteredUsers.map((u, idx) => (
             <tr key={u.id}>
               <td>{idx + 1}</td>
-              <td>{u.username}</td>
               <td>{u.fullname}</td>
               <td>{u.email}</td>
               <td>
-                <span className={`badge ${u.role === "admin" ? "bg-danger" : u.role === "seller" ? "bg-warning" : "bg-success"}`}>
+                <span
+                  className={`badge ${
+                    u.role === "admin"
+                      ? "bg-danger"
+                      : u.role === "seller"
+                      ? "bg-warning text-dark"
+                      : "bg-secondary"
+                  }`}
+                >
                   {u.role}
                 </span>
               </td>
               <td>
-                <span className={u.action === "unlock" ? "text-success fw-bold" : "text-danger fw-bold"}>
-                  {u.action}
+                <span
+                  className={`badge ${
+                    u.status === "active"
+                      ? "bg-success"
+                      : u.status === "pending"
+                      ? "bg-warning text-dark"
+                      : u.status === "approved"
+                      ? "bg-info"
+                      : "bg-danger"
+                  }`}
+                >
+                  {u.status}
                 </span>
               </td>
               <td>
-                <Button variant="outline-secondary" size="sm" onClick={() => openDetailsModal(u)}>
+                <Button
+                  variant="outline-secondary"
+                  size="sm"
+                  onClick={() => openDetailsModal(u)}
+                >
                   Details
                 </Button>
               </td>
@@ -231,79 +347,150 @@ const ManageAccount = () => {
         </tbody>
       </Table>
 
+      {/* Modal */}
       <Modal show={showModal} onHide={closeModal} backdrop="static" centered>
         <Modal.Header closeButton>
-          <Modal.Title>{isCreate ? "Thêm User mới" : isEdit ? "Chỉnh sửa User" : "Chi tiết User"}</Modal.Title>
+          <Modal.Title>
+            {isCreate
+              ? "Add New User"
+              : isEdit
+              ? "Edit User"
+              : "User Details"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form>
-            <Row className="mb-3">
-              <Col md={6}>
-                <Form.Group>
-                  <Form.Label>Username</Form.Label>
-                  <Form.Control type="text" name="username" value={form.username} onChange={handleChange} disabled={!isCreate} />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group>
+            {isCreate && (
+              <>
+                <Form.Group className="mb-3">
                   <Form.Label>Fullname</Form.Label>
-                  <Form.Control type="text" name="fullname" value={form.fullname} onChange={handleChange} disabled={isView} />
+                  <Form.Control
+                    type="text"
+                    name="fullname"
+                    value={form.fullname}
+                    onChange={handleChange}
+                    placeholder="Enter fullname..."
+                  />
                 </Form.Group>
-              </Col>
-            </Row>
 
-            <Row className="mb-3">
-              <Col md={6}>
-                <Form.Group>
+                <Form.Group className="mb-3">
                   <Form.Label>Email</Form.Label>
-                  <Form.Control type="email" name="email" value={form.email} onChange={handleChange} disabled={!isCreate} />
+                  <Form.Control
+                    type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="Enter email..."
+                    isInvalid={!!emailError}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {emailError}
+                  </Form.Control.Feedback>
                 </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    name="password"
+                    value={form.password}
+                    onChange={handleChange}
+                    placeholder="Enter password..."
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
                   <Form.Label>Role</Form.Label>
-                  {isCreate ? (
-                    <Form.Select name="role" value={form.role} onChange={handleChange}>
-                      <option value="">-- Chọn role --</option>
-                      <option value="admin">Admin</option>
-                      <option value="seller">Seller</option>
-                      <option value="buyer">Buyer</option>
-                    </Form.Select>
-                  ) : (
-                    <Form.Control type="text" value={form.role} disabled />
-                  )}
+                  <Form.Select
+                    name="role"
+                    value={form.role}
+                    onChange={handleChange}
+                  >
+                    <option value="">-- Select role --</option>
+                    <option value="admin">Admin</option>
+                    <option value="seller">Seller</option>
+                    <option value="buyer">Buyer</option>
+                  </Form.Select>
                 </Form.Group>
-              </Col>
-            </Row>
+              </>
+            )}
 
-            {/* <Row className="mb-3">
-              
-              <Col md={6}>
-                <Form.Group>
+            {!isCreate && (
+              <>
+                <Form.Group className="mb-3">
+                  <Form.Label>Fullname</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="fullname"
+                    value={form.fullname}
+                    onChange={handleChange}
+                    disabled={isView}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    disabled={isView}
+                    isInvalid={!!emailError}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {emailError}
+                  </Form.Control.Feedback>
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Role</Form.Label>
+                  <Form.Control type="text" value={form.role} disabled />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Status</Form.Label>
+                  <Form.Select
+                    name="status"
+                    value={form.status}
+                    onChange={handleChange}
+                    disabled={isView}
+                  >
+                    <option value="active">Active</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                  </Form.Select>
+                </Form.Group>
+
+                <Form.Group className="mb-3">
                   <Form.Label>Avatar URL</Form.Label>
-                  <Form.Control type="text" name="avatarURL" value={form.avatarURL} onChange={handleChange} disabled={isView} />
+                  <Form.Control
+                    type="text"
+                    name="avatarURL"
+                    value={form.avatarURL}
+                    onChange={handleChange}
+                    disabled={isView}
+                    placeholder="Avatar image link..."
+                  />
                 </Form.Group>
-              </Col>
-            </Row> */}
-
-            <Form.Group className="mb-3">
-              <Form.Label>Action</Form.Label>
-              <Form.Select name="action" value={form.action} onChange={handleChange} disabled={isView}>
-                <option value="unlock">Unlock</option>
-                <option value="lock">Lock</option>
-              </Form.Select>
-            </Form.Group>
+              </>
+            )}
           </Form>
         </Modal.Body>
         <Modal.Footer>
           {isCreate ? (
             <>
               <Button variant="secondary" onClick={closeModal}>
-                Hủy
+                Cancel
               </Button>
-              <Button variant="success" onClick={handleCreate}>
-                Thêm mới
+              <Button
+                variant="success"
+                onClick={handleCreate}
+                disabled={!!emailError}
+              >
+                Add
               </Button>
             </>
           ) : isView ? (
@@ -315,16 +502,20 @@ const ManageAccount = () => {
                 Delete
               </Button>
               <Button variant="secondary" onClick={closeModal}>
-                Đóng
+                Close
               </Button>
             </>
           ) : (
             <>
               <Button variant="secondary" onClick={() => setIsEditing(false)}>
-                Hủy chỉnh sửa
+                Cancel Edit
               </Button>
-              <Button variant="warning" onClick={handleUpdate}>
-                Lưu thay đổi
+              <Button
+                variant="primary"
+                onClick={handleUpdate}
+                disabled={!!emailError}
+              >
+                Save Changes
               </Button>
             </>
           )}

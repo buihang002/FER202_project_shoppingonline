@@ -1,0 +1,19 @@
+.text-pastel-green {
+  color: #77dd77 !important;
+}
+
+.btn-pastel-green {
+  background-color: #77dd77 !important;
+  border-color: #77dd77 !important;
+  color: #fff !important;
+}
+
+.btn-pastel-green:hover {
+  background-color: #66cc66 !important;
+  border-color: #66cc66 !important;
+  color: #fff !important;
+}
+
+.table-pastel-green thead {
+  background-color: #b5e7a0 !important; /* xanh lá pastel nhạt */
+}

@@ -5,24 +5,24 @@
       "username": "johndoe",
       "fullname": "John Doe",
       "email": "thangnguyen11112002@gmail.com",
-      "password": "123456",
+      "password": "",
       "role": "buyer",
       "avatarURL": "https://example.com/avatars/john.jpg",
       "status": "pending",
       "createdAt": "2023-06-21T10:00:00.000Z",
-      "updatedAt": "2025-08-22T18:19:40.942Z"
+      "updatedAt": "2025-08-23T16:31:24.155Z"
     },
     {
       "id": "001",
       "username": "Long",
       "fullname": "Long Leđsdsdsdsds",
       "email": "lelong3304@gmail.com",
-      "password": "123456",
+      "password": "",
       "role": "admin",
       "avatarURL": "https://example.com/avatars/john.jpg",
-       "status": "pending",
+      "status": "approved",
       "createdAt": "2023-06-21T10:00:00.000Z",
-      "updatedAt": "2025-08-22T17:57:21.506Z"
+      "updatedAt": "2025-08-23T16:24:54.987Z"
     },
     {
       "id": "user-1755671414188",
@@ -32,45 +32,93 @@
       "password": "123456",
       "role": "seller",
       "avatarURL": "",
-      "status": "pending",
+      "status": "approved",
       "createdAt": "2025-08-20T06:30:14.188Z",
       "updatedAt": "2025-08-22T17:14:21.281Z"
-    },
-    {
-      "id": "seller-1755674029524",
-      "username": "seller",
-      "fullname": "seller",
-      "email": "seller@gmail.com",
-      "password": "",
-      "role": "seller",
-      "avatarURL": "",
-     "status": "pending",
-      "createdAt": "2025-08-19T17:40:29.524Z",
-      "updatedAt": "2025-08-22T17:48:06.163Z"
     },
     {
       "id": "user-1755771900036",
       "username": "hehe",
       "fullname": "hehe",
       "email": "hehe@gmail.com",
-      "password": "123456",
+      "password": "",
       "role": "buyer",
       "avatarURL": "https://example.com/avatars/default.jpg",
-      "status": "pending",
+      "status": "active",
       "createdAt": "2025-08-21T10:25:00.036Z",
-      "updatedAt": "2025-08-21T10:25:00.036Z"
+      "updatedAt": "2025-08-23T16:24:38.565Z"
     },
     {
       "id": "1755881697453",
       "username": "bùi ",
       "fullname": "Bùi Thị Cẩm Hằng",
       "email": "hihi@gmail.com",
-      "password": "123456",
+      "password": "",
       "role": "admin",
       "avatarURL": "dskfhdklf",
-      "status": "pending",
+      "status": "approved",
       "createdAt": "2025-08-22T16:54:57.453Z",
-      "updatedAt": "2025-08-22T16:54:57.459Z"
+      "updatedAt": "2025-08-23T16:24:44.475Z"
+    },
+    {
+      "id": "56fb2b11-f842-4197-9a2d-e0e590c47ef4",
+      "username": "hihi",
+      "fullname": "Nguyễn Thị Khánh Vi",
+      "email": "sellđer@gmail.com",
+      "password": "",
+      "role": "buyer",
+      "avatarURL": "",
+      "status": "active",
+      "createdAt": "2025-08-23T16:24:19.774Z",
+      "updatedAt": "2025-08-23T16:24:19.774Z"
+    },
+    {
+      "id": "e52a5e83-8cc3-4d0c-a879-c7b1e9e783fc",
+      "username": "",
+      "fullname": "Nguyễn Thị Khánh Vi",
+      "email": "lelong3b304@gmail.com",
+      "password": "123456",
+      "role": "admin",
+      "avatarURL": "",
+      "status": "approved",
+      "createdAt": "2025-08-23T16:26:14.908Z",
+      "updatedAt": "2025-08-23T16:26:14.908Z"
+    },
+    {
+      "id": "e140c568-0514-4298-bee9-823b6b7a3122",
+      "username": "",
+      "fullname": "Bùi Thị Cẩm Hằng",
+      "email": "lelong3304@gmail.com",
+      "password": "123456",
+      "role": "admin",
+      "avatarURL": "",
+      "status": "approved",
+      "createdAt": "2025-08-23T16:29:49.604Z",
+      "updatedAt": "2025-08-23T16:29:49.604Z"
+    },
+    {
+      "id": "03f751b4-1115-4bb9-8c18-f463b9a5b5e6",
+      "username": "lelong3304@gmail.com",
+      "fullname": "vf",
+      "email": "hangbui6565@gmail.com",
+      "password": "123456",
+      "role": "seller",
+      "avatarURL": "",
+      "createdAt": "2025-08-23T16:35:57.988Z",
+      "updatedAt": "2025-08-23T16:35:57.988Z",
+      "status": "pending"
+    },
+    {
+      "id": "bcb48c44-6d42-40c6-b1d3-b98ac902e375",
+      "username": "",
+      "fullname": "Nguyễn Thị Khánh Vi",
+      "email": "lelosng3304@gmail.com",
+      "password": "123456",
+      "role": "admin",
+      "avatarURL": "",
+      "status": "approved",
+      "createdAt": "2025-08-23T16:54:21.324Z",
+      "updatedAt": "2025-08-23T16:54:21.324Z"
     }
   ],
   "addresses": [
@@ -124,13 +172,13 @@
       "updatedAt": "2023-06-20T10:00:00.000Z"
     },
     {
-
       "id": "5e7b",
       "name": "Quần áo",
       "description": "Quần áo mùa hè",
       "createdAt": "2025-08-22T16:20:39.161Z",
       "updatedAt": "2025-08-22T16:20:39.161Z"
-    },{
+    },
+    {
       "id": "60d21b4667d0d8992e610c86",
       "name": "Fashion",
       "description": "Clothing, shoes, and accessories",
@@ -150,7 +198,6 @@
       "description": "Fiction, non-fiction, and educational books",
       "createdAt": "2023-06-20T10:00:00.000Z",
       "updatedAt": "2023-06-20T10:00:00.000Z"
-
     }
   ],
   "conversations": [
@@ -269,7 +316,6 @@
       "createdAt": "2023-06-23T10:30:00.000Z",
       "updatedAt": "2025-07-24T15:07:27.359Z"
     },
-    
     {
       "id": "9ead",
       "title": "Ninh An Như Mộng",
@@ -299,7 +345,8 @@
       "price": 200,
       "categoryId": "5e7b",
       "image": "https://www.cleanipedia.com/images/5iwkm8ckyw6v/p2e3c7e3V9nSuIIlfPdsW/1eb9893e6216a2066186d3db03c78cf8/MS05Ny5qcGc/1200w/qu%E1%BA%A7n-%C3%A1o-%C4%91%C6%B0%E1%BB%A3c-treo-g%E1%BB%8Dn-g%C3%A0ng-tr%C3%AAn-m%C3%B3c..jpg"
-    },{
+    },
+    {
       "id": "60d21b4667d0d8992e610c8e",
       "title": "Laptop Gaming Pro",
       "description": "High-performance laptop for professionals",
@@ -333,7 +380,7 @@
       "image": "https://cdnv2.tgdd.vn/mwg-static/dmx/Products/Images/1942/322673/tivi-qled-samsung-4k-65-inch-qa65q65d-1-638687436771499863-700x467.jpg",
       "categoryId": "60d21b4667d0d8992e610c85",
       "sellerId": "seller-1755674029524",
-      "isAuction": false, 
+      "isAuction": false,
       "createdAt": "2023-06-23T10:30:00.000Z",
       "updatedAt": "2023-06-23T10:30:00.000Z"
     },
@@ -358,7 +405,7 @@
       "image": "https://product.hstatic.net/200000018520/product/e5746d4022a74fcbaba90e8649d6a6f6_1a177d8e4d1b47b3bc7ab780192ef8eb_grande.jpg",
       "categoryId": "60d21b4667d0d8992e610c86",
       "sellerId": "seller-1755674029524",
-      "isAuction": false, 
+      "isAuction": false,
       "createdAt": "2023-06-23T10:30:00.000Z",
       "updatedAt": "2023-06-23T10:30:00.000Z"
     },
@@ -370,10 +417,9 @@
       "image": "https://res.cloudinary.com/sharkninja-na/image/upload/c_fit,h_600,w_600/v1/SharkNinja-NA/TB201C_07?_a=BAKAACDX0",
       "categoryId": "60d21b4667d0d8992e610c87",
       "sellerId": "seller-1755674029524",
-      "isAuction": false, 
+      "isAuction": false,
       "createdAt": "2023-06-23T10:30:00.000Z",
       "updatedAt": "2023-06-23T10:30:00.000Z"
-
     }
   ],
   "returnRequests": [
