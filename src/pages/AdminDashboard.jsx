@@ -1,16 +1,26 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+// AdminDashboard.jsx
+import React from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import { Outlet } from "react-router-dom";
+import NavBar from "../components/Nav/NavBar";
+import Sidebar from "../components/Nav/SideBar";
 
 const AdminDashboard = () => {
-    return (
-        <div className="d-flex flex-column align-items-center justify-content-center vh-100 bg-light">
-            <div className="p-5 bg-white rounded shadow-sm text-center">
-                <h1 className="mb-4">Chào mừng Admin</h1>
-                <p className="mb-4 text-muted">Đây là trang quản trị của bạn.</p>
-                <Link to="/" className="btn btn-success">Về trang chủ</Link>
-            </div>
-        </div>
-    );
+  return (
+    <div>
+      <NavBar />
+      <Container fluid>
+        <Row>
+          <Col md={3} lg={2} className="p-0">
+            <Sidebar />
+          </Col>
+          <Col md={9} lg={10} className="p-4" style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
+            <Outlet />
+          </Col>
+        </Row>
+      </Container>
+    </div>
+  );
 };
 
 export default AdminDashboard;

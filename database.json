@@ -10,19 +10,19 @@
       "avatarURL": "https://example.com/avatars/john.jpg",
       "action": "unlock",
       "createdAt": "2023-06-21T10:00:00.000Z",
-      "updatedAt": "2025-07-24T07:12:57.150Z"
+      "updatedAt": "2025-08-22T18:19:40.942Z"
     },
     {
       "id": "001",
       "username": "Long",
-      "fullname": "Long Le",
+      "fullname": "Long Leđsdsdsdsds",
       "email": "lelong3304@gmail.com",
       "password": "123456",
       "role": "admin",
       "avatarURL": "https://example.com/avatars/john.jpg",
       "action": "unlock",
       "createdAt": "2023-06-21T10:00:00.000Z",
-      "updatedAt": "2025-07-24T07:12:57.150Z"
+      "updatedAt": "2025-08-22T17:57:21.506Z"
     },
     {
       "id": "user-1755671414188",
@@ -30,19 +30,23 @@
       "fullname": "abcxyz",
       "email": "abc@gmail.com",
       "password": "123456",
-      "role": "buyer",
+      "role": "seller",
+      "avatarURL": "",
+      "action": "unlock",
       "createdAt": "2025-08-20T06:30:14.188Z",
-      "updatedAt": "2025-08-20T06:30:14.188Z"
+      "updatedAt": "2025-08-22T17:14:21.281Z"
     },
     {
       "id": "user123",
       "username": "seller",
       "fullname": "seller",
       "email": "seller@gmail.com",
-      "password": "123456",
+      "password": "",
       "role": "seller",
+      "avatarURL": "",
+      "action": "lock",
       "createdAt": "2025-08-19T17:40:29.524Z",
-      "updatedAt": "2025-08-19T17:40:29.524Z"
+      "updatedAt": "2025-08-22T17:48:06.163Z"
     },
     {
       "id": "user-1755771900036",
@@ -55,6 +59,18 @@
       "action": "unlock",
       "createdAt": "2025-08-21T10:25:00.036Z",
       "updatedAt": "2025-08-21T10:25:00.036Z"
+    },
+    {
+      "id": "1755881697453",
+      "username": "bùi ",
+      "fullname": "Bùi Thị Cẩm Hằng",
+      "email": "hihi@gmail.com",
+      "password": "123456",
+      "role": "admin",
+      "avatarURL": "dskfhdklf",
+      "action": "unlock",
+      "createdAt": "2025-08-22T16:54:57.453Z",
+      "updatedAt": "2025-08-22T16:54:57.459Z"
     }
   ],
   "addresses": [
