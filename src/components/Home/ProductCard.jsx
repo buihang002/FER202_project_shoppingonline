@@ -27,7 +27,7 @@ const ProductCard = ({ product }) => {
                     <StarRating rating={product.rating} reviews={product.reviews} />
                     <p className="card-text small text-muted my-2 flex-grow-1">{product.description}</p>
                     <div className="mt-auto">
-                        <p className="fs-5 fw-bolder text-primary mb-1">{product.price ? `$${product.price.toFixed(2)}` : 'N/A'}</p>
+                        <p className="fs-5 fw-bolder text-primary mb-1">$:{product.price ? `${product.price.toFixed(2)}` : 'N/A'}</p>
                         {/* Hiển thị tên người bán thay vì ID */}
                         <p className="small text-muted mb-2">By {product.sellerName || 'Unknown'}</p>
                         <div className="d-grid">
