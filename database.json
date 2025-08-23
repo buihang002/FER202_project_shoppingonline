@@ -8,7 +8,7 @@
       "password": "123456",
       "role": "buyer",
       "avatarURL": "https://example.com/avatars/john.jpg",
-      "action": "unlock",
+      "status": "pending",
       "createdAt": "2023-06-21T10:00:00.000Z",
       "updatedAt": "2025-08-22T18:19:40.942Z"
     },
@@ -20,7 +20,7 @@
       "password": "123456",
       "role": "admin",
       "avatarURL": "https://example.com/avatars/john.jpg",
-      "action": "unlock",
+       "status": "pending",
       "createdAt": "2023-06-21T10:00:00.000Z",
       "updatedAt": "2025-08-22T17:57:21.506Z"
     },
@@ -32,7 +32,7 @@
       "password": "123456",
       "role": "seller",
       "avatarURL": "",
-      "action": "unlock",
+      "status": "pending",
       "createdAt": "2025-08-20T06:30:14.188Z",
       "updatedAt": "2025-08-22T17:14:21.281Z"
     },
@@ -44,7 +44,7 @@
       "password": "",
       "role": "seller",
       "avatarURL": "",
-      "action": "lock",
+     "status": "pending",
       "createdAt": "2025-08-19T17:40:29.524Z",
       "updatedAt": "2025-08-22T17:48:06.163Z"
     },
@@ -56,7 +56,7 @@
       "password": "123456",
       "role": "buyer",
       "avatarURL": "https://example.com/avatars/default.jpg",
-      "action": "unlock",
+      "status": "pending",
       "createdAt": "2025-08-21T10:25:00.036Z",
       "updatedAt": "2025-08-21T10:25:00.036Z"
     },
@@ -68,7 +68,7 @@
       "password": "123456",
       "role": "admin",
       "avatarURL": "dskfhdklf",
-      "action": "unlock",
+      "status": "pending",
       "createdAt": "2025-08-22T16:54:57.453Z",
       "updatedAt": "2025-08-22T16:54:57.459Z"
     }
