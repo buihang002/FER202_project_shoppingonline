@@ -4,30 +4,38 @@ import { Col, Container, Row, Pagination, Modal } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Plus } from "react-bootstrap-icons";
-import CreateProduct from './AddProduct.jsx'; 
+import CreateProduct from './AddProduct.jsx';
 
 function ListProduct({ onViewDetails }) {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
-
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 8;
-
-  // Modal state
   const [showCreateModal, setShowCreateModal] = useState(false);
+
   const handleOpenCreate = () => setShowCreateModal(true);
   const handleCloseCreate = () => setShowCreateModal(false);
 
-  useEffect(() => {
-    axios.get('http://localhost:9999/products')
+  const fetchProducts = () => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (!currentUser) return;
+
+    axios.get(`http://localhost:9999/products?sellerId=${currentUser.id}`)
       .then(res => setProducts(res.data))
       .catch(err => console.log(err));
+  };
 
+  const fetchCategories = () => {
     axios.get('http://localhost:9999/categories')
       .then(res => setCategories(res.data))
       .catch(err => console.log(err));
+  };
+
+  useEffect(() => {
+    fetchProducts();
+    fetchCategories();
   }, []);
 
   useEffect(() => {
@@ -45,27 +53,38 @@ function ListProduct({ onViewDetails }) {
 
   const renderProducts = () => (
     currentProducts.map(product => {
-      const category = categories.find(c => c.id === product.categoryId)?.name || "Unknown";
+      const category = categories.find(c => String(c.id) === String(product.categoryId))?.name || "Unknown";
 
       return (
-        <Col key={product.id} sm={6} md={4} lg={3} className="mb-4">
-          <Card>
-            <Card.Img variant="top" src={product.image} style={{ height: "200px", objectFit: "contain", padding: "10px" }} />
-            <Card.Body>
-              <Card.Title>{product.title}</Card.Title>
-              <Card.Text>Category: {category}</Card.Text>
-              <Card.Text>Description: {product.description}</Card.Text>
-              <Card.Text>Price: ${product.price}</Card.Text>
-              <Button
-                variant="success"
-                style={{ width: "100%" }}
-                onClick={() => onViewDetails(product.id)}
-              >
-                View details
-              </Button>
-            </Card.Body>
-          </Card>
-        </Col>
+     <Col key={product.id} sm={6} md={4} lg={3} className="mb-4">
+  <Card style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+    <Card.Img
+      variant="top"
+      src={product.image}
+      style={{ height: "200px", objectFit: "contain", padding: "10px" }}
+    />
+    <Card.Body className="d-flex flex-column" style={{ flex: "1 1 auto" }}>
+      <Card.Title>{product.title}</Card.Title>
+      <Card.Text>Category: {category}</Card.Text>
+      <Card.Text
+        style={{
+          flexGrow: 1,
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          display: "-webkit-box",
+          WebkitLineClamp: 3,
+          WebkitBoxOrient: "vertical"
+        }}
+      >
+        Description: {product.description}
+      </Card.Text>
+      <Card.Text>Price: ${product.price}</Card.Text>
+      <Button variant="success" className="mt-auto" onClick={() => onViewDetails(product.id)}>
+        View details
+      </Button>
+    </Card.Body>
+  </Card>
+</Col>
       );
     })
   );
@@ -120,7 +139,6 @@ function ListProduct({ onViewDetails }) {
         </Row>
       </Container>
 
-      {/* Modal Create Product */}
       <Modal
         show={showCreateModal}
         onHide={handleCloseCreate}
@@ -132,7 +150,11 @@ function ListProduct({ onViewDetails }) {
           <Modal.Title>Create New Product</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ maxHeight: '80vh', overflowY: 'auto' }}>
-          <CreateProduct onClose={handleCloseCreate} />
+          <CreateProduct
+            onClose={handleCloseCreate}
+            onProductCreated={fetchProducts}
+            onCategoryCreated={fetchCategories}
+          />
         </Modal.Body>
       </Modal>
     </>

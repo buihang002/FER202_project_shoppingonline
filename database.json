@@ -41,7 +41,7 @@
       "username": "seller",
       "fullname": "seller",
       "email": "seller@gmail.com",
-      "password": "",
+      "password": "123456",
       "role": "seller",
       "avatarURL": "",
       "action": "lock",
@@ -129,6 +129,55 @@
       "description": "Quần áo mùa hè",
       "createdAt": "2025-08-22T16:20:39.161Z",
       "updatedAt": "2025-08-22T16:20:39.161Z"
+    },
+    {
+      "id": "cc3c",
+      "name": "Áo ",
+      "description": "Áo dáng dài",
+      "createdAt": "2025-08-23T16:22:55.010Z",
+      "updatedAt": "2025-08-23T16:22:55.010Z"
+    },
+    {
+      "id": "c0e7292860b7ed39c7220ebbd",
+      "name": "Hehee",
+      "description": "heheeheeeeeheee",
+      "createdAt": "2025-08-23T16:25:02.788Z",
+      "updatedAt": "2025-08-23T16:25:02.788Z"
+    },
+    {
+      "id": "9013a47ff17bda5d4aaaa0623",
+      "name": "Test",
+      "description": "testttttttttttttttt",
+      "createdAt": "2025-08-23T16:28:37.310Z",
+      "updatedAt": "2025-08-23T16:28:37.310Z"
+    },
+    {
+      "id": "13a47ff17bda5d4aaaa062330",
+      "name": "testtt",
+      "description": "hii",
+      "createdAt": "2025-08-23T16:30:48.319Z",
+      "updatedAt": "2025-08-23T16:30:48.319Z"
+    },
+    {
+      "id": "a47ff17bda5d4aaaa06233018",
+      "name": "Testttt",
+      "description": "hhhhhhhhhhhhhhhhh",
+      "createdAt": "2025-08-23T16:32:34.605Z",
+      "updatedAt": "2025-08-23T16:32:34.605Z"
+    },
+    {
+      "id": "7ff17bda5d4aaaa0623301845",
+      "name": "Test nữa",
+      "description": "hoho",
+      "createdAt": "2025-08-23T16:34:50.154Z",
+      "updatedAt": "2025-08-23T16:34:50.154Z"
+    },
+    {
+      "id": "f17bda5d4aaaa0623301845bb",
+      "name": "Hẹ hẹ",
+      "description": "111111111111111111",
+      "createdAt": "2025-08-23T16:36:45.111Z",
+      "updatedAt": "2025-08-23T16:36:45.111Z"
     }
   ],
   "conversations": [
@@ -261,42 +310,92 @@
       "updatedAt": "2025-08-22T15:00:00.000Z"
     },
     {
-      "id": "9ead",
-      "title": "Ninh An Như Mộng",
-      "description": "Phim này hay nè",
-      "price": "20",
-      "image": "data:image/jpeg;base64,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",
-      "categoryId": "60d21b4667d0d8992e610c85",
-      "isAuction": false,
-      "auctionEndTime": "",
-      "sellerId": "user123"
-    },
-    {
-      "id": "ff01",
-      "title": "Độ Hoa Niên",
-      "description": "hay",
-      "price": "200",
-      "image": "https://product.hstatic.net/200000845283/product/vn_iphone_15_plus_green_pdp_image_position-1a_green_color_6d041478f50840909ed87cb76cc8350d.jpg",
-      "categoryId": "60d21b4667d0d8992e610c85",
-      "isAuction": false,
-      "auctionEndTime": "",
-      "sellerId": "user123"
-    },
-    {
-      "id": "a236",
-      "title": "Áo dài",
+      "id": "37f0",
+      "title": "Áo đen ",
       "description": "Áo đen dáng dài",
-      "price": "200",
+      "price": 20,
       "categoryId": "5e7b",
-      "image": "https://www.cleanipedia.com/images/5iwkm8ckyw6v/p2e3c7e3V9nSuIIlfPdsW/1eb9893e6216a2066186d3db03c78cf8/MS05Ny5qcGc/1200w/qu%E1%BA%A7n-%C3%A1o-%C4%91%C6%B0%E1%BB%A3c-treo-g%E1%BB%8Dn-g%C3%A0ng-tr%C3%AAn-m%C3%B3c..jpg"
+      "image": "https://product.hstatic.net/200000690725/product/52676411040_14a9edf7fb_k_274a9ee91f644bb497574ddf187a898a_master.jpg",
+      "sellerId": "user123",
+      "createdAt": "2025-08-23T16:13:52.887Z",
+      "updatedAt": "2025-08-23T16:13:52.887Z"
     },
     {
-      "id": "04b2",
-      "title": "hhhhhhhh",
-      "description": "haaaaaaaaaaaaaaaaaaaaaaaaaa",
-      "price": "20",
-      "categoryId": "60d21b4667d0d8992e610c85",
-      "image": "https://5sfashion.vn/storage/upload/images/ckeditor/svwZ2dg7ME3eY7yQj5N7bukfPIo7DAi0zrmPJDIX.png"
+      "id": "9a72",
+      "title": "Áo trắng",
+      "description": "áo hdhhgđhdjdjfjff",
+      "price": 20,
+      "categoryId": "cc3c",
+      "image": "https://product.hstatic.net/200000404243/product/a1md538t1-cnsc478-2603-d__1__b31a93361f0a49c5b58ca379f98e5af4.jpg",
+      "sellerId": "user123",
+      "createdAt": "2025-08-23T16:23:11.212Z",
+      "updatedAt": "2025-08-23T16:23:11.212Z"
+    },
+    {
+      "id": "0e7292860b7ed39c7220ebbdf",
+      "title": "Heheheeh",
+      "description": "Heheeeeeeeeeeeeeeeeeeeeeeee",
+      "price": 30,
+      "categoryId": "c0e7292860b7ed39c7220ebbd",
+      "image": "https://bizweb.dktcdn.net/100/415/697/products/1-43f68bee-ffe3-4d5f-bcbe-725ff90cd875.jpg?v=1701332113873",
+      "sellerId": "user123",
+      "createdAt": "2025-08-23T16:25:18.703Z",
+      "updatedAt": "2025-08-23T16:25:18.703Z"
+    },
+    {
+      "id": "013a47ff17bda5d4aaaa06233",
+      "title": "Test thử",
+      "description": "testtttttttttttttttttttttttttttt",
+      "price": 100,
+      "categoryId": "9013a47ff17bda5d4aaaa0623",
+      "image": "https://pos.nvncdn.com/fa2431-2286/ps/20241206_pqRx6xUiOy.jpeg?v=1733452508",
+      "sellerId": "user123",
+      "createdAt": "2025-08-23T16:28:59.179Z",
+      "updatedAt": "2025-08-23T16:28:59.179Z"
+    },
+    {
+      "id": "3a47ff17bda5d4aaaa0623301",
+      "title": "Test Thử lần 2",
+      "description": "Hiiiiiiiiiiiiiiiiiiiiiiii",
+      "price": 2000,
+      "categoryId": "13a47ff17bda5d4aaaa062330",
+      "image": "https://bizweb.dktcdn.net/100/409/545/products/z5710557099272-de4970ffc952dd435a2821ae64f43264.jpg?v=1727160999677",
+      "sellerId": "user123",
+      "createdAt": "2025-08-23T16:31:11.436Z",
+      "updatedAt": "2025-08-23T16:31:11.436Z"
+    },
+    {
+      "id": "47ff17bda5d4aaaa062330184",
+      "title": "Test 45",
+      "description": "heeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "price": 200,
+      "categoryId": "a47ff17bda5d4aaaa06233018",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYTo_3tXdrBvhMgd2wc-L9L_q9ynEsxTlazg&s",
+      "sellerId": "user123",
+      "createdAt": "2025-08-23T16:32:50.752Z",
+      "updatedAt": "2025-08-23T16:32:50.752Z"
+    },
+    {
+      "id": "ff17bda5d4aaaa0623301845b",
+      "title": "Test 6",
+      "description": "Trời ơi trời 12h đêm r",
+      "price": 20,
+      "categoryId": "7ff17bda5d4aaaa0623301845",
+      "image": "https://product.hstatic.net/1000333436/product/tx_03493_bc4257872dd74155b23dfd805ad1c690_master.jpg",
+      "sellerId": "user123",
+      "createdAt": "2025-08-23T16:35:13.287Z",
+      "updatedAt": "2025-08-23T16:35:13.287Z"
+    },
+    {
+      "id": "17bda5d4aaaa0623301845bbf",
+      "title": "Test 7",
+      "description": "ecccccccccccccccccccccccc",
+      "price": 200,
+      "categoryId": "f17bda5d4aaaa0623301845bb",
+      "image": "https://product.hstatic.net/200000404243/product/a1mn438t2-cncr035-2407-n__1__12b452e26abb46958692cb401643ddd8.jpg",
+      "sellerId": "user123",
+      "createdAt": "2025-08-23T16:36:58.478Z",
+      "updatedAt": "2025-08-23T16:36:58.478Z"
     }
   ],
   "returnRequests": [

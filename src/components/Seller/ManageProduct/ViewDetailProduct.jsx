@@ -32,7 +32,6 @@ function ViewDetails({ id, onBack }) {
           <p><strong>Category:</strong> {category}</p>
           <p><strong>Description:</strong> {product.description}</p>
           <p><strong>Price:</strong> ${product.price}</p>
-          {product.isAuction && <p style={{ color: "red" }}><strong>Auction:</strong> Ongoing</p>}
           <Button variant="success" onClick={onBack}>Back to product list</Button>
         </Col>
       </Row>
