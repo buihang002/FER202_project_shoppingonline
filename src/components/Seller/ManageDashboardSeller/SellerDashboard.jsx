@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box, Drawer, AppBar, Toolbar, List, ListItem, ListItemIcon, ListItemText,
-  Typography, Button, Avatar, Divider, Grid, Card, CardContent
+  Typography, Button, Avatar, Divider, Grid, Card, CardContent,
 } from "@mui/material";
 import {
   Dashboard as DashboardIcon,
@@ -18,6 +18,7 @@ import {
 import ProductList from "../ManageProduct/ProductList.jsx";
 import ViewDetails from "../ManageProduct/ViewDetailProduct.jsx";
 import CreateProduct from "../ManageProduct/AddProduct.jsx";
+import StoreProfile from "../ManageStore/StoreProfile.jsx";
 
 const drawerWidth = 240;
 
@@ -67,7 +68,7 @@ export default function SellerDashboard() {
   );
 
   // Các component trang khác
-  const StoreProfile = () => <Typography variant="h5">Store Profile</Typography>;
+  // const StoreProfile = () => <Typography variant="h5">Store Profile</Typography>; // Removed
   const Inventory = () => <Typography variant="h5">Inventory Management</Typography>;
   const Orders = () => <Typography variant="h5">Orders Management</Typography>;
   const Shipping = () => <Typography variant="h5">Shipping Management</Typography>;
@@ -75,9 +76,12 @@ export default function SellerDashboard() {
   // Hiển thị nội dung theo trang hiện tại
   const renderContent = () => {
     switch (currentPage) {
-      case "Dashboard": return <DashboardHome />;
-      case "Store Profile": return <StoreProfile />;
-      case "Inventory": return <Inventory />;
+      case "Dashboard":
+        return <DashboardHome />;
+      case "Store Profile":
+        return <StoreProfile />; 
+      case "Inventory":
+        return <Inventory />;
       case "Product":
         return (
           <ProductList
@@ -94,9 +98,12 @@ export default function SellerDashboard() {
             onBack={() => setCurrentPage("Product")}
           />
         );
-      case "Orders": return <Orders />;
-      case "Shipping": return <Shipping />;
-      default: return <DashboardHome />;
+      case "Orders":
+        return <Orders />;
+      case "Shipping":
+        return <Shipping />;
+      default:
+        return <DashboardHome />;
     }
   };
 

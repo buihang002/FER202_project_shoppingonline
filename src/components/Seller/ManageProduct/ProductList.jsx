@@ -56,35 +56,32 @@ function ListProduct({ onViewDetails }) {
       const category = categories.find(c => String(c.id) === String(product.categoryId))?.name || "Unknown";
 
       return (
-     <Col key={product.id} sm={6} md={4} lg={3} className="mb-4">
-  <Card style={{ height: "100%", display: "flex", flexDirection: "column" }}>
-    <Card.Img
-      variant="top"
-      src={product.image}
-      style={{ height: "200px", objectFit: "contain", padding: "10px" }}
-    />
-    <Card.Body className="d-flex flex-column" style={{ flex: "1 1 auto" }}>
-      <Card.Title>{product.title}</Card.Title>
-      <Card.Text>Category: {category}</Card.Text>
-      <Card.Text
-        style={{
-          flexGrow: 1,
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          display: "-webkit-box",
-          WebkitLineClamp: 3,
-          WebkitBoxOrient: "vertical"
-        }}
-      >
-        Description: {product.description}
-      </Card.Text>
-      <Card.Text>Price: ${product.price}</Card.Text>
-      <Button variant="success" className="mt-auto" onClick={() => onViewDetails(product.id)}>
-        View details
-      </Button>
-    </Card.Body>
-  </Card>
-</Col>
+        <Col key={product.id} sm={6} md={4} lg={3} className="mb-4 d-flex">
+          <Card className="w-100 shadow-sm rounded-3 product-card">
+            <div className="d-flex justify-content-center align-items-center" style={{ height: "200px" }}>
+              <Card.Img
+                variant="top"
+                src={product.image}
+                style={{ height: "100%", objectFit: "contain", padding: "15px" }}
+              />
+            </div>
+            <Card.Body className="d-flex flex-column p-3">
+              <Card.Title className="fw-bold text-dark mb-1">{product.title}</Card.Title>
+              <Card.Subtitle className="mb-2 text-muted small">
+                Category: {category}
+              </Card.Subtitle>
+              <Card.Text className="flex-grow-1 card-description mb-3">
+               Description: {product.description}
+              </Card.Text>
+              <div className="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
+                <h5 className="mb-0 text-success fw-bold">${product.price}</h5>
+                <Button variant="success" className="btn-sm" onClick={() => onViewDetails(product.id)}>
+                  View details
+                </Button>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
       );
     })
   );
@@ -109,34 +106,47 @@ function ListProduct({ onViewDetails }) {
 
   return (
     <>
-      <Container>
-        <Row className="mb-3">
-          <Button
-            variant="success"
-            style={{ display: "flex", alignItems: "center", gap: "5px", width: '15%' }}
-            onClick={handleOpenCreate}
-          >
-            <Plus /> Create Product
-          </Button>
-        </Row>
-
-        <Row>
-          <Col md={12}>
-            <div style={{ display: "flex", justifyContent: "center", margin: "20px 0" }}>
-              <input
-                type="text"
-                placeholder="Search by title..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                style={{ width: "70%", padding: "8px" }}
-              />
-            </div>
-            <Row>
-              {renderProducts()}
-            </Row>
-            {renderPagination()}
+      <Container className="my-5">
+        <Row className="mb-4 align-items-center">
+          <Col md={6}>
+            <h2 className="mb-0 text-primary fw-bold">Your Products</h2>
+          </Col>
+          <Col md={6} className="d-flex justify-content-md-end mt-3 mt-md-0">
+            <Button
+              variant="primary"
+              className="d-flex align-items-center gap-2 px-4"
+              onClick={handleOpenCreate}
+            >
+              <Plus size={20} /> Create Product
+            </Button>
           </Col>
         </Row>
+        
+        <Row className="mb-4 justify-content-center">
+          <Col md={8}>
+            <div className="input-group">
+              <input
+                type="text"
+                className="form-control rounded-pill px-4"
+                placeholder="Search by product title..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
+            </div>
+          </Col>
+        </Row>
+
+        <Row className="justify-content-center">
+          {filteredProducts.length > 0 ? (
+            renderProducts()
+          ) : (
+            <Col className="text-center py-5">
+              <p className="text-muted lead">No products found.</p>
+            </Col>
+          )}
+        </Row>
+        
+        {filteredProducts.length > productsPerPage && renderPagination()}
       </Container>
 
       <Modal
@@ -147,7 +157,7 @@ function ListProduct({ onViewDetails }) {
         backdrop="static"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Create New Product</Modal.Title>
+          <Modal.Title className="fw-bold">Create New Product</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ maxHeight: '80vh', overflowY: 'auto' }}>
           <CreateProduct
