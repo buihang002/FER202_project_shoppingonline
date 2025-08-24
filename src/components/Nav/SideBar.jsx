@@ -11,7 +11,16 @@ const Sidebar = () => {
     { name: "Dashboard", path: "/admin/dashboard", icon: <FiHome /> },
     { name: "Manage Account", path: "/admin/account", icon: <FiUsers /> },
     { name: "Manage Product", path: "/admin/product", icon: <FiBox /> },
-    { name: "Pending Seller", path: "/admin/pending-seller", icon: <FiClock /> },
+    {
+      name: "Pending Seller",
+      path: "/admin/pending-seller",
+      icon: <FiClock />,
+    },
+    { name: "Manage Order", path: "/admin/order", icon: <FiClock /> },
+    { name: "Manage Review", path: "/admin/review", icon: <FiClock /> },
+        { name: "Manage Complaints", path: "/admin/complaints", icon: <FiClock /> },
+
+    
   ];
 
   const handleLogout = () => {
