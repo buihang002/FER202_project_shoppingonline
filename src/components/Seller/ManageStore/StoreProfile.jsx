@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {
-  Container, Card, Row, Col, Spinner, Alert,
-  Button
-} from 'react-bootstrap';
-import EditStoreModal from './EditProfileStore';
+import { Container, Card, Row, Col, Spinner, Alert, Button } from 'react-bootstrap';
+import EditStoreModal from './EditProfileStore.jsx';
 
 function StoreProfile() {
   const [store, setStore] = useState(null);
@@ -16,96 +13,81 @@ function StoreProfile() {
     description: '',
     bannerImageURL: '',
   });
+  const [allStores, setAllStores] = useState([]);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
   useEffect(() => {
-    const fetchStoreData = async () => {
+    const fetchData = async () => {
       setStatus('loading');
       try {
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if (!currentUser?.id || currentUser.role !== 'seller') {
-          throw new Error('You are not logged in as a seller.');
-        }
+        if (!currentUser?.id || currentUser.role !== 'seller') throw new Error('Not a seller');
         const sellerId = currentUser.id;
 
-        const storeRes = await axios.get(`http://localhost:9999/stores?sellerId=${sellerId}`);
-        const fetchedStore = storeRes.data[0];
+        const [storeRes, userRes, storesRes] = await Promise.all([
+          axios.get(`http://localhost:9999/stores?sellerId=${sellerId}`),
+          axios.get(`http://localhost:9999/users/${sellerId}`),
+          axios.get(`http://localhost:9999/stores`)
+        ]);
 
-        if (!fetchedStore) {
-          throw new Error('No store found for this seller.');
-        }
+        const fetchedStore = storeRes.data[0];
+        if (!fetchedStore) throw new Error('No store found');
+
         setStore(fetchedStore);
         setFormData({
           storeName: fetchedStore.storeName,
           description: fetchedStore.description,
           bannerImageURL: fetchedStore.bannerImageURL,
         });
-
-        const sellerRes = await axios.get(`http://localhost:9999/users/${sellerId}`);
-        setSeller(sellerRes.data);
+        setSeller(userRes.data);
+        setAllStores(storesRes.data);
         setStatus('success');
       } catch (err) {
-        console.error('Error fetching data:', err);
+        console.error(err);
         setStatus('error');
       }
     };
-    fetchStoreData();
+
+    fetchData();
   }, []);
 
-  const handleSave = async (e) => {
-    e.preventDefault();
-    setStatus('saving');
-    
-    // Validation
+  const handleSave = async () => {
     if (!formData.storeName || !formData.description) {
-      alert('Store name and description are required.');
-      setStatus('error');
+      alert("Store name and description are required.");
+      return;
+    }
+
+    const duplicate = allStores.some(s => s.storeName.toLowerCase() === formData.storeName.trim().toLowerCase() && s.id !== store.id);
+    if (duplicate) {
+      alert("Store name already exists.");
       return;
     }
 
     try {
+      setStatus('saving');
       const updatedStore = { ...store, ...formData, updatedAt: new Date().toISOString() };
       await axios.put(`http://localhost:9999/stores/${store.id}`, updatedStore);
       setStore(updatedStore);
-      handleCloseModal();
+      setShowModal(false);
       setStatus('success');
+      alert("Store updated successfully!");
     } catch (err) {
-      console.error('Error updating store:', err);
+      console.error(err);
       setStatus('error');
+      alert("Failed to update store.");
     }
   };
 
   const renderContent = () => {
-    if (status === 'loading') {
-      return (
-        <div className="text-center my-5">
-          <Spinner animation="border" variant="primary" />
-          <p className="mt-2">Loading store profile...</p>
-        </div>
-      );
-    }
-    
-    if (status === 'error' || !store || !seller) {
-      return (
-        <div className="my-5">
-          <Alert variant="danger">
-            {status === 'error' ? 'Failed to load store data. Please try again.' : 'Store data is not available.'}
-          </Alert>
-        </div>
-      );
-    }
+    if (status === 'loading') return <div className="text-center my-5"><Spinner animation="border" />Loading...</div>;
+    if (status === 'error' || !store || !seller) return <Alert variant="danger">Failed to load store data.</Alert>;
 
     return (
       <>
         {store.bannerImageURL && (
-          <Card.Img
-            variant="top"
-            src={store.bannerImageURL}
-            alt="Store Banner"
-            style={{ height: '300px', objectFit: 'cover' }}
-          />
+          <Card.Img variant="top" src={store.bannerImageURL} alt="Store Banner" style={{ height: '300px', objectFit: 'cover' }} />
         )}
         <Card.Body className="p-4 p-md-5">
           <Row className="mb-4 align-items-center">
@@ -114,9 +96,7 @@ function StoreProfile() {
               <p className="lead text-muted">{store.description}</p>
             </Col>
             <Col xs="auto">
-              <Button variant="outline-primary" onClick={handleShowModal}>
-                Edit
-              </Button>
+              <Button variant="outline-primary" onClick={handleShowModal}>Edit</Button>
             </Col>
           </Row>
           <hr />
@@ -138,6 +118,7 @@ function StoreProfile() {
       <Card className="shadow-lg border-0 rounded-3">
         {renderContent()}
       </Card>
+
       {store && (
         <EditStoreModal
           show={showModal}

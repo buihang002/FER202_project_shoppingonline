@@ -28,6 +28,9 @@ export default function InventoryReport() {
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(false);
 
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const sellerId = currentUser?.id;
+
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
@@ -36,8 +39,12 @@ export default function InventoryReport() {
                     axios.get("http://localhost:9999/inventories"),
                     axios.get("http://localhost:9999/products"),
                 ]);
-                setInventories(invenRes.data);
-                setProducts(prodRes.data);
+                const shopProducts = prodRes.data.filter(p => p.sellerId === sellerId);
+                const shopProductIds = shopProducts.map(p => p.id);
+                const shopInventories = invenRes.data.filter(inv => shopProductIds.includes(inv.productId));
+
+                setProducts(shopProducts);
+                setInventories(shopInventories);
             } catch (err) {
                 console.error("Failed to fetch inventories or products", err);
             } finally {
@@ -45,19 +52,17 @@ export default function InventoryReport() {
             }
         };
         fetchData();
-    }, []);
+    }, [sellerId]);
 
     const getProductInfo = (productId) => {
         return products.find((p) => p.id === productId) || {};
     };
 
-    // Filter theo search
     const filteredInventories = inventories.filter((inv) => {
         const product = getProductInfo(inv.productId);
         return product.title?.toLowerCase().includes(search.toLowerCase());
     });
 
-    // Tính thống kê
     const totalProducts = inventories.length;
     const totalQuantity = inventories.reduce((sum, inv) => sum + inv.quantity, 0);
     const totalValue = inventories.reduce((sum, inv) => {
@@ -66,7 +71,6 @@ export default function InventoryReport() {
     }, 0);
     const lowStockCount = inventories.filter((inv) => inv.quantity < 10).length;
 
-    // Dữ liệu biểu đồ top tồn kho cao nhất
     const sortedByQuantity = [...inventories].sort((a, b) => b.quantity - a.quantity);
     const topProducts = sortedByQuantity.slice(0, 5);
     const chartData = {
@@ -108,7 +112,7 @@ export default function InventoryReport() {
                         <Col md={3}>
                             <Card className="p-3 shadow-sm text-center bg-light">
                                 <h5>Total Value</h5>
-                                <h4>{totalValue.toLocaleString()} ₫</h4>
+                                <h4>{totalValue.toLocaleString()} $</h4>
                             </Card>
                         </Col>
                         <Col md={3}>
@@ -119,13 +123,11 @@ export default function InventoryReport() {
                         </Col>
                     </Row>
 
-                    {/* Biểu đồ tồn kho */}
                     <Card className="p-3 mb-4 shadow-sm">
                         <h5 className="mb-3">Top 5 Products with Highest Stock</h5>
                         <Bar data={chartData} />
                     </Card>
 
-                    {/* Search */}
                     <InputGroup className="mb-3">
                         <Form.Control
                             placeholder="Search product..."
@@ -134,7 +136,6 @@ export default function InventoryReport() {
                         />
                     </InputGroup>
 
-                    {/* Bảng dữ liệu tồn kho */}
                     <Table striped bordered hover responsive>
                         <thead className="table-dark">
                             <tr>
