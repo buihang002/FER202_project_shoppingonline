@@ -30,7 +30,10 @@ const NavHome = () => {
                         {currentUser ? (
                             <>
                                 <span className="text-sm">Hello, {currentUser.fullname}</span>
-                                <a href="#" className="btn btn-outline-success btn-sm">Become a Seller</a>
+                                {/* Nút "Become a Seller" chỉ hiển thị cho buyer */}
+                                {currentUser.role === 'buyer' && (
+                                    <Link to="/become-seller" className="btn btn-outline-success btn-sm">Become a Seller</Link>
+                                )}
                                 <button onClick={handleLogout} className="btn btn-primary btn-sm">Logout</button>
                             </>
                         ) : (
