@@ -289,7 +289,7 @@ const ManageAccount = () => {
         responsive
         className="shadow-sm bg-white rounded text-center align-middle"
       >
-        <thead className="table-primary">
+        <thead className="table-dark">
           <tr>
             <th>#</th>
             <th>Fullname</th>
