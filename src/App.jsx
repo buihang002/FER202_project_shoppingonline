@@ -16,6 +16,7 @@ import AdminOrderPage from "./components/Admin/AdminOrderPage.jsx";
 import AdminReview from "./components/Admin/AdminReview.jsx";
 import ManageComplaints from "./components/Admin/ManageComplaints/ManageComplaints.jsx";
 import ProductDetailPage from "./components/Admin/ManageProduct/ProductDetails.jsx";
+import ManageProfile from "./components/Admin/ManageProfile/Profile.jsx";
 function App() {
   return (
     <Router>
@@ -33,7 +34,10 @@ function App() {
           <Route path="order" element={<AdminOrderPage />} />
           <Route path="review" element={<AdminReview />} />
           <Route path="/admin/complaints" element={<ManageComplaints />} />
+       
         </Route>
+                <Route path="/profile/:userId" element={<ManageProfile />} />
+
         <Route path="/admin/product/:id" element={<ProductDetailPage />} />
 
         <Route path="/seller/products" element={<ListProduct />} />

@@ -13,35 +13,39 @@ const ManageProduct = () => {
   useEffect(() => {
     // Load sellers
     fetch(`${API_URL}/users?role=seller`)
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(setSellers);
 
     // Load categories
     fetch(`${API_URL}/categories`)
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(setCategories);
 
     // Load products
     fetch(`${API_URL}/products`)
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(setProducts);
   }, []);
 
-  const getCategoryName = (id) => categories.find(c => c.id === id)?.name || "-";
-  const getSellerName = (id) => sellers.find(s => s.id === id)?.fullname || "Unknown";
+  const getCategoryName = (id) =>
+    categories.find((c) => c.id === id)?.name || "-";
+  const getSellerName = (id) =>
+    sellers.find((s) => s.id === id)?.fullname || "Unknown";
 
-  const filteredProducts = products.filter(p => {
+  const filteredProducts = products.filter((p) => {
     const matchSearch =
       p.title.toLowerCase().includes(search.toLowerCase()) ||
       p.description?.toLowerCase().includes(search.toLowerCase());
-    const matchCategory = filterCategory ? p.categoryId === filterCategory : true;
+    const matchCategory = filterCategory
+      ? p.categoryId === filterCategory
+      : true;
     return matchSearch && matchCategory;
   });
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       fetch(`${API_URL}/products/${id}`, { method: "DELETE" })
-        .then(() => setProducts(prev => prev.filter(p => p.id !== id)))
+        .then(() => setProducts((prev) => prev.filter((p) => p.id !== id)))
         .catch(console.error);
     }
   };
@@ -50,13 +54,22 @@ const ManageProduct = () => {
   const totalProducts = products.length;
   const totalCategories = categories.length;
   const totalSellers = sellers.length;
-  const avgPrice = totalProducts ? (products.reduce((sum, p) => sum + Number(p.price || 0), 0) / totalProducts).toFixed(2) : 0;
-  const maxPrice = totalProducts ? Math.max(...products.map(p => Number(p.price || 0))) : 0;
-  const minPrice = totalProducts ? Math.min(...products.map(p => Number(p.price || 0))) : 0;
+  const avgPrice = totalProducts
+    ? (
+        products.reduce((sum, p) => sum + Number(p.price || 0), 0) /
+        totalProducts
+      ).toFixed(2)
+    : 0;
+  const maxPrice = totalProducts
+    ? Math.max(...products.map((p) => Number(p.price || 0)))
+    : 0;
+  const minPrice = totalProducts
+    ? Math.min(...products.map((p) => Number(p.price || 0)))
+    : 0;
 
   return (
     <div className="container ">
-      <h1 className="mb-4">Product Management</h1>
+      <h2 className="mb-4 fw-bold">Product Management</h2>
 
       {/* === Stats Section === */}
       <div className="row mb-4">
@@ -117,16 +130,18 @@ const ManageProduct = () => {
           placeholder="Search products..."
           className="form-control"
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
         />
         <select
           className="form-select"
           value={filterCategory}
-          onChange={e => setFilterCategory(e.target.value)}
+          onChange={(e) => setFilterCategory(e.target.value)}
         >
           <option value="">All Categories</option>
-          {categories.map(c => (
-            <option key={c.id} value={c.id}>{c.name}</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
           ))}
         </select>
       </div>
@@ -146,14 +161,18 @@ const ManageProduct = () => {
         </thead>
         <tbody>
           {filteredProducts.length > 0 ? (
-            filteredProducts.map(p => (
+            filteredProducts.map((p) => (
               <tr key={p.id}>
                 <td>{p.id}</td>
                 <td>
                   <img
                     src={p.image}
                     alt={p.title}
-                    style={{ width: "70px", height: "50px", objectFit: "cover" }}
+                    style={{
+                      width: "70px",
+                      height: "50px",
+                      objectFit: "cover",
+                    }}
                   />
                 </td>
                 <td>{p.title}</td>
@@ -161,10 +180,16 @@ const ManageProduct = () => {
                 <td>{getSellerName(p.sellerId)}</td>
                 <td>${p.price}</td>
                 <td>
-                  <Link to={`/admin/product/${p.id}`} className="btn btn-sm btn-info me-2">
+                  <Link
+                    to={`/admin/product/${p.id}`}
+                    className="btn btn-sm btn-info me-2"
+                  >
                     Details
                   </Link>
-                  <button className="btn btn-sm btn-danger" onClick={() => handleDelete(p.id)}>
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={() => handleDelete(p.id)}
+                  >
                     Delete
                   </button>
                 </td>
@@ -172,7 +197,9 @@ const ManageProduct = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="7" className="text-center">No products found</td>
+              <td colSpan="7" className="text-center">
+                No products found
+              </td>
             </tr>
           )}
         </tbody>

@@ -3,26 +3,26 @@
     {
       "id": "60d21b4667d0d8992e610c88",
       "username": "johndoe",
-      "fullname": "John Doe",
+      "fullname": "John Doesd",
       "email": "thangnguyen11112002@gmail.com",
       "password": "",
       "role": "buyer",
       "avatarURL": "https://example.com/avatars/john.jpg",
-      "status": "pending",
+      "status": "active",
       "createdAt": "2023-06-21T10:00:00.000Z",
-      "updatedAt": "2025-08-23T16:31:24.155Z"
+      "updatedAt": "2025-08-24T09:28:22.972Z"
     },
     {
       "id": "001",
       "username": "Long",
-      "fullname": "Long Leđsdsdsdsds",
-      "email": "lelong3304@gmail.com",
+      "fullname": "Long gt",
+      "email": "lelong330Ò4@gmail.com",
       "password": "",
       "role": "admin",
       "avatarURL": "https://example.com/avatars/john.jpg",
       "status": "approved",
       "createdAt": "2023-06-21T10:00:00.000Z",
-      "updatedAt": "2025-08-23T16:24:54.987Z"
+      "updatedAt": "2025-08-24T09:27:55.012Z"
     },
     {
       "id": "user-1755671414188",
@@ -87,14 +87,14 @@
     {
       "id": "e140c568-0514-4298-bee9-823b6b7a3122",
       "username": "",
-      "fullname": "Bùi Thị Cẩm Hằng",
+      "fullname": "Bùi Thị Cẩm Hằngszcszdxs",
       "email": "lelong3304@gmail.com",
-      "password": "123456",
+      "password": "",
       "role": "admin",
       "avatarURL": "",
-      "status": "approved",
+      "status": "pending",
       "createdAt": "2025-08-23T16:29:49.604Z",
-      "updatedAt": "2025-08-23T16:29:49.604Z"
+      "updatedAt": "2025-08-24T09:28:36.907Z"
     },
     {
       "id": "03f751b4-1115-4bb9-8c18-f463b9a5b5e6",
@@ -107,18 +107,6 @@
       "createdAt": "2025-08-23T16:35:57.988Z",
       "updatedAt": "2025-08-24T03:47:36.588Z",
       "status": "approved"
-    },
-    {
-      "id": "bcb48c44-6d42-40c6-b1d3-b98ac902e375",
-      "username": "",
-      "fullname": "Nguyễn Thị Khánh Vi",
-      "email": "lelosng3304@gmail.com",
-      "password": "123456",
-      "role": "admin",
-      "avatarURL": "",
-      "status": "approved",
-      "createdAt": "2025-08-23T16:54:21.324Z",
-      "updatedAt": "2025-08-23T16:54:21.324Z"
     }
   ],
   "addresses": [

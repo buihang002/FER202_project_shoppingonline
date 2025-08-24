@@ -1,11 +1,21 @@
 import React from "react";
 import { Nav, Button } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FiHome, FiUsers, FiBox, FiLogOut, FiClock } from "react-icons/fi";
+import {
+  FiHome,
+  FiUsers,
+  FiBox,
+  FiLogOut,
+  FiClock,
+  FiUser,
+} from "react-icons/fi";
 
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Giả sử userId lưu trong localStorage sau khi login
+  const userId = localStorage.getItem("userId");
 
   const links = [
     { name: "Dashboard", path: "/admin/dashboard", icon: <FiHome /> },
@@ -18,14 +28,19 @@ const Sidebar = () => {
     },
     { name: "Manage Order", path: "/admin/order", icon: <FiClock /> },
     { name: "Manage Review", path: "/admin/review", icon: <FiClock /> },
-        { name: "Manage Complaints", path: "/admin/complaints", icon: <FiClock /> },
+    { name: "Manage Complaints", path: "/admin/complaints", icon: <FiClock /> },
 
-    
-  ];
+    userId && {
+      name: "My Profile",
+      path: `/profile/${userId}`,
+      icon: <FiUser />,
+    },
+  ].filter(Boolean);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    localStorage.removeItem("userId"); // xóa luôn userId
     navigate("/login");
   };
 
