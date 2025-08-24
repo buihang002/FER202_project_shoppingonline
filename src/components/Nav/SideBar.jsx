@@ -8,13 +8,13 @@ import {
   FiLogOut,
   FiClock,
   FiUser,
+  FiAlertCircle, 
 } from "react-icons/fi";
 
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Giả sử userId lưu trong localStorage sau khi login
   const userId = localStorage.getItem("userId");
 
   const links = [
@@ -24,12 +24,13 @@ const Sidebar = () => {
     {
       name: "Pending Seller",
       path: "/admin/pending-seller",
-      icon: <FiClock />,
+      icon: <FiClock />, 
     },
-    { name: "Manage Order", path: "/admin/order", icon: <FiClock /> },
-    { name: "Manage Review", path: "/admin/review", icon: <FiClock /> },
-    { name: "Manage Complaints", path: "/admin/complaints", icon: <FiClock /> },
-
+    { 
+      name: "Manage Complaints", 
+      path: "/admin/complaints", 
+      icon: <FiAlertCircle />
+    },
     userId && {
       name: "My Profile",
       path: `/profile/${userId}`,
@@ -40,7 +41,7 @@ const Sidebar = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
-    localStorage.removeItem("userId"); // xóa luôn userId
+    localStorage.removeItem("userId"); 
     navigate("/login");
   };
 
