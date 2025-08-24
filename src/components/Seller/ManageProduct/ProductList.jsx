@@ -15,6 +15,7 @@ import {
 import { PlusCircle, Search, Tag } from "react-bootstrap-icons";
 import CreateProduct from "./AddProduct.jsx";
 
+
 export default function ListProduct({ onViewDetails }) {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -23,62 +24,39 @@ export default function ListProduct({ onViewDetails }) {
   const [filterCategory, setFilterCategory] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [loading, setLoading] = useState(false);
   const productsPerPage = 8;
 
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const sellerId = currentUser?.id;
 
-  const fetchAllData = async () => {
+  const fetchData = () => {
     if (!sellerId) return;
-    
-    setLoading(true);
-    console.log("Fetching all data...");
-
-    try {
-      const [prodRes, catRes, invenRes] = await Promise.all([
-        axios.get(`http://localhost:9999/products?sellerId=${sellerId}`),
-        axios.get("http://localhost:9999/categories"),
-        axios.get("http://localhost:9999/inventories"),
-      ]);
-
-      setProducts(prodRes.data);
-      setCategories(catRes.data);
-      setInventories(invenRes.data);
-      
-      console.log("Products:", prodRes.data.length);
-      console.log("Inventories:", invenRes.data.length);
-      console.log("Inventories data:", invenRes.data.map(inv => ({ 
-        id: inv.id, 
-        productId: inv.productId, 
-        quantity: inv.quantity 
-      })));
-      
-    } catch (err) {
-      console.error("Failed to fetch data:", err);
-    } finally {
-      setLoading(false);
-    }
+    Promise.all([
+      axios.get(`http://localhost:9999/products?sellerId=${sellerId}`),
+      axios.get("http://localhost:9999/categories"),
+      axios.get("http://localhost:9999/inventories"),
+    ])
+      .then(([prodRes, catRes, invenRes]) => {
+        setProducts(prodRes.data);
+        setCategories(catRes.data);
+        setInventories(invenRes.data);
+      })
+      .catch((err) => console.error("Failed to fetch data", err));
   };
 
-  // Initial load
   useEffect(() => {
-    fetchAllData();
+    fetchData();
+    // eslint-disable-next-line
   }, [sellerId]);
 
-  // Lấy số lượng tồn kho của sản phẩm
+  const handleProductCreated = () => {
+    fetchData();
+    setShowCreateModal(false);
+  };
+
   const getQuantity = (productId) => {
     const inven = inventories.find((inv) => inv.productId === productId);
-    const quantity = inven ? inven.quantity : 0;
-    
-    // Debuglog từng sản phẩm
-    console.log(`getQuantity for productId ${productId}:`, {
-      found: !!inven,
-      inventory: inven,
-      quantity: quantity
-    });
-    
-    return quantity;
+    return inven ? inven.quantity : 0;
   };
 
   // Filter products
@@ -94,7 +72,7 @@ export default function ListProduct({ onViewDetails }) {
     });
   }, [products, search, filterCategory]);
 
-  // Pagination
+  // Pagination logic
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -102,17 +80,6 @@ export default function ListProduct({ onViewDetails }) {
     indexOfFirstProduct,
     indexOfLastProduct
   );
-
-  // Xử lý khi tạo sản phẩm mới thành công
-  const handleProductAdded = async (newProduct, newInventory) => {
-    console.log("Product added, refreshing data...");
-    setShowCreateModal(false);
-    
-    // Đợi một chút để backend xử lý xong
-    setTimeout(async () => {
-      await fetchAllData();
-    }, 500);
-  };
 
   return (
     <Container fluid className="py-4" style={{ background: "#f8f9fa" }}>
@@ -154,22 +121,12 @@ export default function ListProduct({ onViewDetails }) {
             variant="primary"
             className="d-flex align-items-center w-100 w-md-auto"
             onClick={() => setShowCreateModal(true)}
-            disabled={loading}
           >
             <PlusCircle className="me-2" size={20} />
             Create Product
           </Button>
         </Col>
       </Row>
-
-      {/* Loading indicator */}
-      {loading && (
-        <div className="text-center py-3">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      )}
 
       {/* Product Grid */}
       <Row className="g-4">
@@ -219,7 +176,7 @@ export default function ListProduct({ onViewDetails }) {
                     className="position-absolute top-0 start-0 m-2"
                     style={{ fontSize: "0.8rem", padding: "5px 10px" }}
                   >
-                    Out of Stock
+                    Hết hàng
                   </Badge>
                 )}
 
@@ -242,10 +199,9 @@ export default function ListProduct({ onViewDetails }) {
                   <h5 className="fw-bold text-success">${product.price}</h5>
                   <p className="mb-0 small">
                     <strong>Quantity:</strong>{" "}
-                    <span className={quantity === 0 ? "text-danger" : "text-success"}>
+                    <span className={quantity === 0 ? "text-danger" : "text-dark"}>
                       {quantity}
                     </span>
-                  
                   </p>
                 </Card.Body>
 
@@ -263,7 +219,7 @@ export default function ListProduct({ onViewDetails }) {
           );
         })}
 
-        {currentProducts.length === 0 && !loading && (
+        {currentProducts.length === 0 && (
           <Col xs={12} className="text-center py-5">
             <h5 className="text-muted">No products found</h5>
           </Col>
@@ -297,10 +253,7 @@ export default function ListProduct({ onViewDetails }) {
           <Modal.Title>Create New Product</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <CreateProduct
-            onClose={() => setShowCreateModal(false)}
-            onProductAdded={handleProductAdded}
-          />
+          <CreateProduct onClose={() => setShowCreateModal(false)} onProductCreated={handleProductCreated} />
         </Modal.Body>
       </Modal>
     </Container>

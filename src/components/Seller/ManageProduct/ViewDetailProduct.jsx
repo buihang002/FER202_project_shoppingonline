@@ -21,6 +21,7 @@ import EditProduct from "./EditProduct";
 
 function ViewDetails({ id, onBack }) {
   const [product, setProduct] = useState(null);
+  const [inventory, setInventory] = useState(null);
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState("Unknown");
   const [loading, setLoading] = useState(true);
@@ -29,7 +30,7 @@ function ViewDetails({ id, onBack }) {
   useEffect(() => {
     let mounted = true;
 
-    const fetchProduct = async () => {
+    const fetchProductAndInventory = async () => {
       try {
         const res = await axios.get(`http://localhost:9999/products/${id}`);
         if (mounted) setProduct(res.data);
@@ -42,6 +43,13 @@ function ViewDetails({ id, onBack }) {
           );
           if (prodCategory) setCategory(prodCategory.name);
         }
+
+        const inventoryRes = await axios.get(
+          `http://localhost:9999/inventories?productId=${id}`
+        );
+        if (mounted && inventoryRes.data.length > 0) {
+          setInventory(inventoryRes.data[0]);
+        }
       } catch (err) {
         console.error(err);
       } finally {
@@ -49,7 +57,7 @@ function ViewDetails({ id, onBack }) {
       }
     };
 
-    fetchProduct();
+    fetchProductAndInventory();
     return () => {
       mounted = false;
     };
@@ -61,6 +69,12 @@ function ViewDetails({ id, onBack }) {
       setProduct(res.data);
       const prodCategory = categories.find((c) => c.id === res.data.categoryId);
       if (prodCategory) setCategory(prodCategory.name);
+
+      // Cập nhật quantity sau khi edit
+      const inventoryRes = await axios.get(
+        `http://localhost:9999/inventories?productId=${id}`
+      );
+      if (inventoryRes.data.length > 0) setInventory(inventoryRes.data[0]);
     } catch (err) {
       console.error(err);
     }
@@ -68,7 +82,10 @@ function ViewDetails({ id, onBack }) {
 
   if (loading) {
     return (
-      <Container className="d-flex justify-content-center align-items-center" style={{ height: "70vh" }}>
+      <Container
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "70vh" }}
+      >
         <Spinner animation="border" variant="primary" role="status" />
         <span className="ms-2">Loading product details...</span>
       </Container>
@@ -139,6 +156,21 @@ function ViewDetails({ id, onBack }) {
               <h3 className="fw-bold text-success mt-3 d-flex align-items-center">
                 <CashStack className="me-2" /> ${product.price}
               </h3>
+
+              {inventory && (
+                <h5 className="fw-semibold mt-2 d-flex align-items-center">
+                  <span className="me-2">Quantity:</span>
+                  <span
+                    style={{
+                      color: inventory.quantity === 0 ? "red" :
+                             inventory.quantity < 10 ? "orange" : "green",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {inventory.quantity}
+                  </span>
+                </h5>
+              )}
 
               {product.isAuction && (
                 <Badge

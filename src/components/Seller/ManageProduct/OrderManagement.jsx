@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import {
     Container,
@@ -7,8 +7,6 @@ import {
     Badge,
     Spinner,
     Modal,
-    Row,
-    Col,
     Card,
 } from "react-bootstrap";
 import { CheckCircle, XCircle, EyeFill } from "react-bootstrap-icons";
@@ -27,29 +25,41 @@ export default function OrderManagement() {
     useEffect(() => {
         if (!sellerId) return;
 
-        Promise.all([
-            axios.get("http://localhost:9999/orders"),
-            axios.get("http://localhost:9999/orderItems"),
-            axios.get(`http://localhost:9999/products?sellerId=${sellerId}`),
-        ])
-            .then(([orderRes, itemRes, prodRes]) => {
-                const sellerProductIds = prodRes.data.map((p) => p.id);
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                const [orderRes, itemRes, prodRes] = await Promise.all([
+                    axios.get("http://localhost:9999/orders"),
+                    axios.get("http://localhost:9999/orderItems"),
+                    axios.get(`http://localhost:9999/products?sellerId=${sellerId}`),
+                ]);
+
+                const sellerProducts = prodRes.data || [];
+                const sellerProductIds = sellerProducts.map((p) => p.id);
+
                 const sellerOrderItems = itemRes.data.filter((item) =>
                     sellerProductIds.includes(item.productId)
                 );
+
                 const sellerOrderIds = [
                     ...new Set(sellerOrderItems.map((item) => item.orderId)),
                 ];
+
                 const sellerOrders = orderRes.data.filter((order) =>
                     sellerOrderIds.includes(order.id)
                 );
 
                 setOrders(sellerOrders);
                 setOrderItems(sellerOrderItems);
-                setProducts(prodRes.data);
+                setProducts(sellerProducts);
+            } catch (error) {
+                console.error("Failed to fetch orders", error);
+            } finally {
                 setLoading(false);
-            })
-            .catch(() => setLoading(false));
+            }
+        };
+
+        fetchData();
     }, [sellerId]);
 
     const getOrderItems = (orderId) => {
@@ -57,7 +67,7 @@ export default function OrderManagement() {
     };
 
     const getProductName = (productId) => {
-        return products.find((p) => p.id === productId)?.title || "Unknown";
+        return products.find((p) => p.id === productId)?.title || "Unknown Product";
     };
 
     const getStatusBadge = (status) => {
@@ -73,16 +83,28 @@ export default function OrderManagement() {
         }
     };
 
-    const updateOrderStatus = async (orderId, status) => {
+    const updateOrderItemStatus = async (itemId, status) => {
+        let confirmMessage = "";
+
+        if (status === "confirmed") {
+            confirmMessage = "Are you sure you want to confirm this order item?";
+        } else if (status === "cancelled") {
+            confirmMessage = "Are you sure you want to cancel this order item?";
+        }
+
+        if (confirmMessage && !window.confirm(confirmMessage)) {
+            return;
+        }
+
         try {
-            await axios.patch(`http://localhost:9999/orders/${orderId}`, { status });
-            setOrders((prev) =>
-                prev.map((order) =>
-                    order.id === orderId ? { ...order, status } : order
+            await axios.patch(`http://localhost:9999/orderItems/${itemId}`, { status });
+            setOrderItems((prev) =>
+                prev.map((item) =>
+                    item.id === itemId ? { ...item, status } : item
                 )
             );
         } catch (error) {
-            console.error("Failed to update order status", error);
+            console.error("Failed to update order item status", error);
         }
     };
 
@@ -124,51 +146,43 @@ export default function OrderManagement() {
                                     </td>
                                 </tr>
                             ) : (
-                                orders.map((order) => (
-                                    <tr key={order.id} className="text-center">
-                                        <td className="fw-semibold">{order.id}</td>
-                                        <td className="text-start">
-                                            {getOrderItems(order.id).map((item) => (
-                                                <div key={item.id}>
-                                                    • {getProductName(item.productId)}
-                                                </div>
-                                            ))}
-                                        </td>
-                                        <td>{new Date(order.orderDate).toLocaleDateString()}</td>
-                                        <td className="fw-bold text-success">
-                                            ${order.totalPrice.toFixed(2)}
-                                        </td>
-                                        <td>{getStatusBadge(order.status)}</td>
-                                        <td className="d-flex justify-content-center gap-2">
-                                            <Button
-                                                variant="info"
-                                                size="sm"
-                                                className="d-flex align-items-center gap-1"
-                                                onClick={() => handleViewDetails(order)}
-                                            >
-                                                <EyeFill /> View
-                                            </Button>
-                                            <Button
-                                                variant="success"
-                                                size="sm"
-                                                className="d-flex align-items-center gap-1"
-                                                onClick={() => updateOrderStatus(order.id, "confirmed")}
-                                                disabled={order.status === "confirmed"}
-                                            >
-                                                <CheckCircle /> Confirm
-                                            </Button>
-                                            <Button
-                                                variant="danger"
-                                                size="sm"
-                                                className="d-flex align-items-center gap-1"
-                                                onClick={() => updateOrderStatus(order.id, "cancelled")}
-                                                disabled={order.status === "cancelled"}
-                                            >
-                                                <XCircle /> Cancel
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                ))
+                                orders.map((order) => {
+                                    const items = getOrderItems(order.id);
+                                    return (
+                                        <tr key={order.id} className="text-center">
+                                            <td className="fw-semibold">{order.id}</td>
+                                            <td className="text-start">
+                                                {items.map((item) => (
+                                                    <div key={item.id}>
+                                                        • {getProductName(item.productId)}
+                                                    </div>
+                                                ))}
+                                            </td>
+                                            <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                                            <td className="fw-bold text-success">
+                                                ${order.totalPrice.toFixed(2)}
+                                            </td>
+                                            <td>
+                                                {items.some(i => i.status === "confirmed")
+                                                    ? getStatusBadge("confirmed")
+                                                    : items.every(i => i.status === "cancelled")
+                                                        ? getStatusBadge("cancelled")
+                                                        : getStatusBadge("pending")
+                                                }
+                                            </td>
+                                            <td className="d-flex justify-content-center gap-2">
+                                                <Button
+                                                    variant="info"
+                                                    size="sm"
+                                                    className="d-flex align-items-center gap-1"
+                                                    onClick={() => handleViewDetails(order)}
+                                                >
+                                                    <EyeFill /> View
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })
                             )}
                         </tbody>
                     </Table>
@@ -192,9 +206,6 @@ export default function OrderManagement() {
                                 <strong>Date:</strong>{" "}
                                 {new Date(selectedOrder.orderDate).toLocaleString()}
                             </p>
-                            <p>
-                                <strong>Status:</strong> {getStatusBadge(selectedOrder.status)}
-                            </p>
                             <h6 className="mt-3">Products:</h6>
                             <Table striped bordered hover size="sm" className="mt-2">
                                 <thead className="table-light">
@@ -203,6 +214,8 @@ export default function OrderManagement() {
                                         <th>Quantity</th>
                                         <th>Unit Price</th>
                                         <th>Subtotal</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -211,8 +224,41 @@ export default function OrderManagement() {
                                             <td>{getProductName(item.productId)}</td>
                                             <td>{item.quantity}</td>
                                             <td>${item.unitPrice.toFixed(2)}</td>
-                                            <td>
-                                                ${(item.unitPrice * item.quantity).toFixed(2)}
+                                            <td>${(item.unitPrice * item.quantity).toFixed(2)}</td>
+                                            <td>{getStatusBadge(item.status)}</td>
+                                            <td className="d-flex justify-content-center gap-2">
+                                                {item.status === "pending" && (
+                                                    <>
+                                                        <Button
+                                                            variant="success"
+                                                            size="sm"
+                                                            onClick={() =>
+                                                                updateOrderItemStatus(item.id, "confirmed")
+                                                            }
+                                                        >
+                                                            <CheckCircle /> Confirm
+                                                        </Button>
+                                                        <Button
+                                                            variant="danger"
+                                                            size="sm"
+                                                            onClick={() =>
+                                                                updateOrderItemStatus(item.id, "cancelled")
+                                                            }
+                                                        >
+                                                            <XCircle /> Cancel
+                                                        </Button>
+                                                    </>
+                                                )}
+                                                {item.status === "confirmed" && (
+                                                    <span className="text-success fw-semibold">
+                                                        Confirmed ✔
+                                                    </span>
+                                                )}
+                                                {item.status === "cancelled" && (
+                                                    <span className="text-danger fw-semibold">
+                                                        Cancelled ✘
+                                                    </span>
+                                                )}
                                             </td>
                                         </tr>
                                     ))}

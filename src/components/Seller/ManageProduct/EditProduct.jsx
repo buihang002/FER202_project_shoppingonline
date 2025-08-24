@@ -8,27 +8,43 @@ export default function EditProduct({ show, onClose, productId, onUpdated }) {
         description: "",
         price: "",
         categoryId: "",
-        image: ""
+        image: "",
     });
 
     const [categories, setCategories] = useState([]);
+    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [previewImage, setPreviewImage] = useState("");
+    const [quantity, setQuantity] = useState(0);
+    const [inventoryId, setInventoryId] = useState(null);
+    const [titleError, setTitleError] = useState("");
 
+    // Fetch dữ liệu sản phẩm + category + tồn kho
     useEffect(() => {
         if (!productId || !show) return;
 
         const fetchData = async () => {
             setLoading(true);
             try {
-                const [productRes, categoryRes] = await Promise.all([
+                const [productRes, categoryRes, inventoryRes, allProductsRes] = await Promise.all([
                     axios.get(`http://localhost:9999/products/${productId}`),
-                    axios.get("http://localhost:9999/categories")
+                    axios.get("http://localhost:9999/categories"),
+                    axios.get(`http://localhost:9999/inventories?productId=${productId}`),
+                    axios.get("http://localhost:9999/products"),
                 ]);
 
                 setFormData(productRes.data);
                 setCategories(categoryRes.data);
+                setProducts(allProductsRes.data);
                 setPreviewImage(productRes.data.image);
+
+                if (inventoryRes.data.length > 0) {
+                    setQuantity(inventoryRes.data[0].quantity);
+                    setInventoryId(inventoryRes.data[0].id);
+                } else {
+                    setQuantity(0);
+                    setInventoryId(null);
+                }
             } catch (error) {
                 console.error("Failed to fetch product data", error);
             } finally {
@@ -39,10 +55,22 @@ export default function EditProduct({ show, onClose, productId, onUpdated }) {
         fetchData();
     }, [productId, show]);
 
+    // Cập nhật field trong form
     const handleChange = (field, value) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
+
+        // Nếu đang thay đổi title thì check trùng realtime
+        if (field === "title") {
+            const isDuplicate = products.some(
+                (p) =>
+                    p.id !== productId &&
+                    p.title.trim().toLowerCase() === value.trim().toLowerCase()
+            );
+            setTitleError(isDuplicate ? "Product title already exists!" : "");
+        }
     };
 
+    // Đổi ảnh sản phẩm thành base64
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -60,10 +88,30 @@ export default function EditProduct({ show, onClose, productId, onUpdated }) {
         setFormData((prev) => ({ ...prev, image: "" }));
     };
 
+    // Submit form
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (titleError) return; // Không cho submit nếu title trùng
+
         try {
+            // Cập nhật product
             await axios.put(`http://localhost:9999/products/${productId}`, formData);
+
+            // Cập nhật tồn kho
+            if (inventoryId) {
+                await axios.put(`http://localhost:9999/inventories/${inventoryId}`, {
+                    productId,
+                    quantity,
+                    lastUpdated: new Date().toISOString(),
+                });
+            } else {
+                await axios.post(`http://localhost:9999/inventories`, {
+                    productId,
+                    quantity,
+                    lastUpdated: new Date().toISOString(),
+                });
+            }
+
             onUpdated();
             onClose();
         } catch (error) {
@@ -79,10 +127,7 @@ export default function EditProduct({ show, onClose, productId, onUpdated }) {
 
             <Modal.Body style={{ maxHeight: "75vh", overflowY: "auto" }}>
                 {loading ? (
-                    <div
-                        className="d-flex justify-content-center align-items-center"
-                        style={{ minHeight: "300px" }}
-                    >
+                    <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "300px" }}>
                         <Spinner animation="border" variant="primary" />
                     </div>
                 ) : (
@@ -95,18 +140,32 @@ export default function EditProduct({ show, onClose, productId, onUpdated }) {
                                         type="text"
                                         value={formData.title}
                                         onChange={(e) => handleChange("title", e.target.value)}
+                                        isInvalid={!!titleError}
                                         required
                                     />
+                                    <Form.Control.Feedback type="invalid">{titleError}</Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
 
-                            <Col md={6}>
+                            <Col md={3}>
                                 <Form.Group controlId="price">
                                     <Form.Label>Price</Form.Label>
                                     <Form.Control
                                         type="number"
                                         value={formData.price}
                                         onChange={(e) => handleChange("price", e.target.value)}
+                                        required
+                                    />
+                                </Form.Group>
+                            </Col>
+
+                            <Col md={3}>
+                                <Form.Group controlId="quantity">
+                                    <Form.Label>Quantity</Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        value={quantity}
+                                        onChange={(e) => setQuantity(Number(e.target.value))}
                                         required
                                     />
                                 </Form.Group>
@@ -170,7 +229,7 @@ export default function EditProduct({ show, onClose, productId, onUpdated }) {
                             <Button variant="secondary" onClick={onClose} className="me-2">
                                 Cancel
                             </Button>
-                            <Button variant="success" type="submit">
+                            <Button variant="success" type="submit" disabled={!!titleError}>
                                 Save Changes
                             </Button>
                         </div>

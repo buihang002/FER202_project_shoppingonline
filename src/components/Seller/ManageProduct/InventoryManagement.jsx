@@ -28,23 +28,32 @@ export default function InventoryReport() {
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(false);
 
+    // Lấy seller từ localStorage
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     const sellerId = currentUser?.id;
 
     useEffect(() => {
+        if (!sellerId) return;
+
         const fetchData = async () => {
             setLoading(true);
             try {
+                // Lọc products theo sellerId trước
                 const [invenRes, prodRes] = await Promise.all([
                     axios.get("http://localhost:9999/inventories"),
-                    axios.get("http://localhost:9999/products"),
+                    axios.get(`http://localhost:9999/products?sellerId=${sellerId}`),
                 ]);
-                const shopProducts = prodRes.data.filter(p => p.sellerId === sellerId);
-                const shopProductIds = shopProducts.map(p => p.id);
-                const shopInventories = invenRes.data.filter(inv => shopProductIds.includes(inv.productId));
 
-                setProducts(shopProducts);
-                setInventories(shopInventories);
+                const sellerProducts = prodRes.data || [];
+                const sellerProductIds = sellerProducts.map((p) => p.id);
+
+                // Lọc tồn kho chỉ theo các product của seller hiện tại
+                const sellerInventories = invenRes.data.filter((inv) =>
+                    sellerProductIds.includes(inv.productId)
+                );
+
+                setInventories(sellerInventories);
+                setProducts(sellerProducts);
             } catch (err) {
                 console.error("Failed to fetch inventories or products", err);
             } finally {
@@ -58,23 +67,33 @@ export default function InventoryReport() {
         return products.find((p) => p.id === productId) || {};
     };
 
+    // Filter theo search
     const filteredInventories = inventories.filter((inv) => {
         const product = getProductInfo(inv.productId);
         return product.title?.toLowerCase().includes(search.toLowerCase());
     });
 
-    const totalProducts = inventories.length;
-    const totalQuantity = inventories.reduce((sum, inv) => sum + inv.quantity, 0);
-    const totalValue = inventories.reduce((sum, inv) => {
+    // Tính thống kê
+    const totalProducts = filteredInventories.length;
+    const totalQuantity = filteredInventories.reduce(
+        (sum, inv) => sum + inv.quantity,
+        0
+    );
+    const totalValue = filteredInventories.reduce((sum, inv) => {
         const product = getProductInfo(inv.productId);
         return sum + (product.price || 0) * inv.quantity;
     }, 0);
-    const lowStockCount = inventories.filter((inv) => inv.quantity < 10).length;
+    const lowStockCount = filteredInventories.filter((inv) => inv.quantity < 10).length;
 
-    const sortedByQuantity = [...inventories].sort((a, b) => b.quantity - a.quantity);
+    // Dữ liệu biểu đồ top tồn kho cao nhất
+    const sortedByQuantity = [...filteredInventories].sort(
+        (a, b) => b.quantity - a.quantity
+    );
     const topProducts = sortedByQuantity.slice(0, 5);
     const chartData = {
-        labels: topProducts.map((inv) => getProductInfo(inv.productId).title || "Unknown"),
+        labels: topProducts.map(
+            (inv) => getProductInfo(inv.productId).title || "Unknown"
+        ),
         datasets: [
             {
                 label: "Số lượng tồn kho",
@@ -91,7 +110,10 @@ export default function InventoryReport() {
             <h3 className="mb-4">Inventory Report</h3>
 
             {loading ? (
-                <div className="d-flex justify-content-center align-items-center" style={{ height: "300px" }}>
+                <div
+                    className="d-flex justify-content-center align-items-center"
+                    style={{ height: "300px" }}
+                >
                     <Spinner animation="border" variant="primary" />
                 </div>
             ) : (
@@ -112,7 +134,7 @@ export default function InventoryReport() {
                         <Col md={3}>
                             <Card className="p-3 shadow-sm text-center bg-light">
                                 <h5>Total Value</h5>
-                                <h4>{totalValue.toLocaleString()} $</h4>
+                                <h4>{totalValue.toLocaleString()} ₫</h4>
                             </Card>
                         </Col>
                         <Col md={3}>
@@ -167,10 +189,15 @@ export default function InventoryReport() {
                                                     }}
                                                 />
                                             </td>
-                                            <td>{product.price?.toLocaleString()} $</td>
+                                            <td>{product.price?.toLocaleString()} ₫</td>
                                             <td
                                                 style={{
-                                                    color: inv.quantity === 0 ? "red" : inv.quantity < 10 ? "orange" : "green",
+                                                    color:
+                                                        inv.quantity === 0
+                                                            ? "red"
+                                                            : inv.quantity < 10
+                                                                ? "orange"
+                                                                : "green",
                                                     fontWeight: "bold",
                                                 }}
                                             >

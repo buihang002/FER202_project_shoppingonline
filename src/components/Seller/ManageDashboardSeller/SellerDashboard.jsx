@@ -21,6 +21,7 @@ import CreateProduct from "../ManageProduct/AddProduct.jsx";
 import InventoryManagement from "../ManageProduct/InventoryManagement.jsx";
 import OrderManagement from "../ManageProduct/OrderManagement.jsx";
 import StoreProfile from "../ManageStore/StoreProfile.jsx";
+import ShippingManagement from "../ManageProduct/ShippingManagement.jsx";
 
 const drawerWidth = 240;
 
@@ -43,7 +44,11 @@ export default function SellerDashboard() {
   const handleMenuClick = (text) => setCurrentPage(text);
 
   // Xử lý logout
-  const handleLogout = () => navigate("/login");
+const handleLogout = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    navigate("/login");
+  };
 
   // Component trang chủ Dashboard
   const DashboardHome = () => (
@@ -68,13 +73,6 @@ export default function SellerDashboard() {
       </Grid>
     </Box>
   );
-
-  // Các component trang khác
-  // const StoreProfile = () => <Typography variant="h5">Store Profile</Typography>;
-  // const Inventory = () => <Typography variant="h5">Inventory Management</Typography>;
-  // const Orders = () => <Typography variant="h5">Orders Management</Typography>;
-  const Shipping = () => <Typography variant="h5">Shipping Management</Typography>;
-
   // Hiển thị nội dung theo trang hiện tại
   const renderContent = () => {
     switch (currentPage) {
@@ -102,7 +100,9 @@ export default function SellerDashboard() {
       case "Orders": return (
         <OrderManagement />
       );
-      case "Shipping": return <Shipping />;
+      case "Shipping": return (
+        <ShippingManagement/>
+      );
       default: return <DashboardHome />;
     }
   };
