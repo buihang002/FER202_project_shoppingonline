@@ -22,6 +22,7 @@ import InventoryManagement from "../ManageProduct/InventoryManagement.jsx";
 import OrderManagement from "../ManageProduct/OrderManagement.jsx";
 import StoreProfile from "../ManageStore/StoreProfile.jsx";
 import ShippingManagement from "../ManageProduct/ShippingManagement.jsx";
+import DashboardHome from "./DashBoard.jsx"; 
 
 const drawerWidth = 240;
 
@@ -50,29 +51,29 @@ const handleLogout = () => {
     navigate("/login");
   };
 
-  // Component trang chủ Dashboard
-  const DashboardHome = () => (
-    <Box>
-      <Typography variant="h4" gutterBottom>Dashboard Overview</Typography>
-      <Grid container spacing={3}>
-        {[
-          { label: "Total Products", value: 150 },
-          { label: "Total Orders", value: 25 },
-          { label: "Revenue", value: "$1,250" },
-          { label: "Pending Orders", value: 5 },
-        ].map((item, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
-            <Card>
-              <CardContent>
-                <Typography>{item.label}</Typography>
-                <Typography>{item.value}</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-  );
+  // // Component trang chủ Dashboard
+  // const DashboardHome = () => (
+  //   <Box>
+  //     <Typography variant="h4" gutterBottom>Dashboard Overview</Typography>
+  //     <Grid container spacing={3}>
+  //       {[
+  //         { label: "Total Products", value: 150 },
+  //         { label: "Total Orders", value: 25 },
+  //         { label: "Revenue", value: "$1,250" },
+  //         { label: "Pending Orders", value: 5 },
+  //       ].map((item, index) => (
+  //         <Grid item xs={12} sm={6} md={3} key={index}>
+  //           <Card>
+  //             <CardContent>
+  //               <Typography>{item.label}</Typography>
+  //               <Typography>{item.value}</Typography>
+  //             </CardContent>
+  //           </Card>
+  //         </Grid>
+  //       ))}
+  //     </Grid>
+  //   </Box>
+  // );
   // Hiển thị nội dung theo trang hiện tại
   const renderContent = () => {
     switch (currentPage) {
