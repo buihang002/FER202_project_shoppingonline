@@ -8,9 +8,10 @@
       "password": "",
       "role": "buyer",
       "avatarURL": "https://example.com/avatars/john.jpg",
-      "status": "active",
+      "status": "approved",
+      "action": "inactive",
       "createdAt": "2023-06-21T10:00:00.000Z",
-      "updatedAt": "2025-08-24T09:28:22.972Z"
+      "updatedAt": "2025-08-26T13:55:08.838Z"
     },
     {
       "id": "001",
@@ -21,21 +22,9 @@
       "role": "admin",
       "avatarURL": "https://example.com/avatars/john.jpg",
       "status": "approved",
+      "action": "active",
       "createdAt": "2023-06-21T10:00:00.000Z",
       "updatedAt": "2025-08-24T09:27:55.012Z"
-    },
-    {
-      "id": "user-1755671414188",
-      "username": "abc",
-      "fullname": "abcxyz",
-      "email": "abc@gmail.com",
-
-      "password": "123456",
-      "role": "seller",
-      "avatarURL": "",
-      "action": "unlock",
-      "createdAt": "2025-08-20T06:30:14.188Z",
-      "updatedAt": "2025-08-22T17:14:21.281Z"
     },
     {
       "id": "user123",
@@ -46,6 +35,7 @@
       "role": "seller",
       "avatarURL": "",
       "status": "pending",
+      "action": "active",
       "createdAt": "2025-08-20T06:30:14.188Z",
       "updatedAt": "2025-08-24T03:49:00.652Z"
     },
@@ -57,7 +47,8 @@
       "password": "",
       "role": "buyer",
       "avatarURL": "https://example.com/avatars/default.jpg",
-      "status": "active",
+      "status": "approved",
+      "action": "active",
       "createdAt": "2025-08-21T10:25:00.036Z",
       "updatedAt": "2025-08-23T16:24:38.565Z"
     },
@@ -70,6 +61,7 @@
       "role": "admin",
       "avatarURL": "dskfhdklf",
       "status": "approved",
+      "action": "active",
       "createdAt": "2025-08-22T16:54:57.453Z",
       "updatedAt": "2025-08-23T16:24:44.475Z"
     },
@@ -81,7 +73,8 @@
       "password": "",
       "role": "buyer",
       "avatarURL": "",
-      "status": "active",
+      "status": "approved",
+      "action": "active",
       "createdAt": "2025-08-23T16:24:19.774Z",
       "updatedAt": "2025-08-23T16:24:19.774Z"
     },
@@ -94,6 +87,7 @@
       "role": "admin",
       "avatarURL": "",
       "status": "approved",
+      "action": "active",
       "createdAt": "2025-08-23T16:26:14.908Z",
       "updatedAt": "2025-08-23T16:26:14.908Z"
     },
@@ -105,7 +99,8 @@
       "password": "",
       "role": "admin",
       "avatarURL": "",
-      "status": "pending",
+      "status": "approved",
+      "action": "active",
       "createdAt": "2025-08-23T16:29:49.604Z",
       "updatedAt": "2025-08-24T09:28:36.907Z"
     },
@@ -117,9 +112,10 @@
       "password": "",
       "role": "seller",
       "avatarURL": "",
+      "status": "approved",
+      "action": "active",
       "createdAt": "2025-08-23T16:35:57.988Z",
-      "updatedAt": "2025-08-24T03:47:36.588Z",
-      "status": "approved"
+      "updatedAt": "2025-08-24T03:47:36.588Z"
     }
   ],
   "addresses": [
@@ -214,7 +210,10 @@
   "conversations": [
     {
       "id": "6881e8b1ef7b120dda02fb6e",
-      "participants": ["60d21b4667d0d8992e610c88", "60d21b4667d0d8992e610c89"],
+      "participants": [
+        "60d21b4667d0d8992e610c88",
+        "60d21b4667d0d8992e610c89"
+      ],
       "unreadCount": {
         "60d21b4667d0d8992e610c88": 0,
         "60d21b4667d0d8992e610c89": 0
