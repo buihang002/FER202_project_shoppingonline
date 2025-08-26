@@ -1,7 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import SellerDashboard from "./pages/SellerDashboard.jsx";
 import BecomeSeller from "./components/Buyer/BecomeSeller.jsx";
 import ProductDetail from "./pages/ProductDetail.jsx";
 import CartPage from "./pages/CartPage.jsx";
@@ -27,8 +26,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/seller/dashboard" element={<SellerDashboard />} />
-
         <Route path="/admin" element={<AdminDashboard />}>
           <Route path="/admin/dashboard" element={<Admin />} />
           <Route path="/admin/account" element={<ManageAccount />} />
@@ -39,12 +36,11 @@ function App() {
           <Route path="review" element={<AdminReview />} />
           <Route path="/admin/complaints" element={<ManageComplaints />} />
         </Route>
+
+
         <Route path="/profile/:userId" element={<ManageProfile />} />
-
         <Route path="/admin/product/:id" element={<ProductDetailPage />} />
-
         <Route path="/seller/products" element={<ListProduct />} />
-
         <Route path="/become-seller" element={<BecomeSeller />} />
         <Route path="/product/:productId" element={<ProductDetail />} />
         <Route path="/cart" element={<CartPage />} />
