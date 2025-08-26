@@ -1,7 +1,10 @@
+import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-
+import SellerDashboard from "./pages/SellerDashboard.jsx";
+import BecomeSeller from "./components/Buyer/BecomeSeller.jsx";
+import ProductDetail from "./pages/ProductDetail.jsx";
+import CartPage from "./pages/CartPage.jsx";
 import Home from "./pages/Home.jsx";
 import Login from "./components/Authentication/Login.jsx";
 import Register from "./components/Authentication/Register.jsx";
@@ -25,6 +28,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/seller/dashboard" element={<SellerDashboard />} />
+
         <Route path="/admin" element={<AdminDashboard />}>
           <Route path="/admin/dashboard" element={<Admin />} />
           <Route path="/admin/account" element={<ManageAccount />} />
@@ -34,13 +38,16 @@ function App() {
           <Route path="order" element={<AdminOrderPage />} />
           <Route path="review" element={<AdminReview />} />
           <Route path="/admin/complaints" element={<ManageComplaints />} />
-       
         </Route>
-                <Route path="/profile/:userId" element={<ManageProfile />} />
+        <Route path="/profile/:userId" element={<ManageProfile />} />
 
         <Route path="/admin/product/:id" element={<ProductDetailPage />} />
 
         <Route path="/seller/products" element={<ListProduct />} />
+
+        <Route path="/become-seller" element={<BecomeSeller />} />
+        <Route path="/product/:productId" element={<ProductDetail />} />
+        <Route path="/cart" element={<CartPage />} />
       </Routes>
     </Router>
   );
