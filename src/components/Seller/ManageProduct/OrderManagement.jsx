@@ -251,12 +251,12 @@ export default function OrderManagement() {
                                                 )}
                                                 {item.status === "confirmed" && (
                                                     <span className="text-success fw-semibold">
-                                                        Confirmed ✔
+                                                        Confirmed 
                                                     </span>
                                                 )}
                                                 {item.status === "cancelled" && (
                                                     <span className="text-danger fw-semibold">
-                                                        Cancelled ✘
+                                                        Cancelled 
                                                     </span>
                                                 )}
                                             </td>
