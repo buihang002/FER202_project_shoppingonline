@@ -19,6 +19,7 @@ import AdminReview from "./components/Admin/AdminReview.jsx";
 import ManageComplaints from "./components/Admin/ManageComplaints/ManageComplaints.jsx";
 import ProductDetailPage from "./components/Admin/ManageProduct/ProductDetails.jsx";
 import ManageProfile from "./components/Admin/ManageProfile/Profile.jsx";
+
 function App() {
   return (
     <Router>
@@ -26,6 +27,10 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
+        <Route path="/seller/dashboard" element={<SellerDashboard />} />
+
+
         <Route path="/admin" element={<AdminDashboard />}>
           <Route path="/admin/dashboard" element={<Admin />} />
           <Route path="/admin/account" element={<ManageAccount />} />
@@ -38,8 +43,11 @@ function App() {
         </Route>
 
 
+
         <Route path="/profile/:userId" element={<ManageProfile />} />
         <Route path="/admin/product/:id" element={<ProductDetailPage />} />
+
+
         <Route path="/seller/products" element={<ListProduct />} />
         <Route path="/become-seller" element={<BecomeSeller />} />
         <Route path="/product/:productId" element={<ProductDetail />} />
