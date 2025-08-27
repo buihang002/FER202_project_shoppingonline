@@ -1,0 +1,24 @@
+.seller-products h4 {
+  font-size: 1.3rem;
+}
+
+.product-card {
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+}
+
+.product-img-card {
+  height: 180px;
+  object-fit: cover;
+}
+
+.text-truncate-multiline {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* giới hạn 2 dòng */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
