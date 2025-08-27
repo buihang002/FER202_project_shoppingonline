@@ -19,7 +19,7 @@ export default function EditProduct({ show, onClose, productId, onUpdated }) {
     const [inventoryId, setInventoryId] = useState(null);
     const [titleError, setTitleError] = useState("");
 
-    // Fetch dữ liệu sản phẩm + category + tồn kho
+  
     useEffect(() => {
         if (!productId || !show) return;
 
@@ -55,11 +55,10 @@ export default function EditProduct({ show, onClose, productId, onUpdated }) {
         fetchData();
     }, [productId, show]);
 
-    // Cập nhật field trong form
+ 
     const handleChange = (field, value) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
 
-        // Nếu đang thay đổi title thì check trùng realtime
         if (field === "title") {
             const isDuplicate = products.some(
                 (p) =>
@@ -69,8 +68,6 @@ export default function EditProduct({ show, onClose, productId, onUpdated }) {
             setTitleError(isDuplicate ? "Product title already exists!" : "");
         }
     };
-
-    // Đổi ảnh sản phẩm thành base64
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -88,16 +85,13 @@ export default function EditProduct({ show, onClose, productId, onUpdated }) {
         setFormData((prev) => ({ ...prev, image: "" }));
     };
 
-    // Submit form
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (titleError) return; // Không cho submit nếu title trùng
+        if (titleError) return;
 
         try {
-            // Cập nhật product
             await axios.put(`http://localhost:9999/products/${productId}`, formData);
 
-            // Cập nhật tồn kho
             if (inventoryId) {
                 await axios.put(`http://localhost:9999/inventories/${inventoryId}`, {
                     productId,

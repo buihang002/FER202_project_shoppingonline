@@ -25,12 +25,11 @@ export default function ShippingManagement() {
                 const sellerProducts = prodRes?.data || [];
                 const sellerProductIds = sellerProducts.map((p) => p.id);
 
-                // Lọc ra orderItems của seller
+            
                 const sellerOrderItems = itemRes.data.filter((item) =>
                     sellerProductIds.includes(item?.productId)
                 );
 
-                // Chỉ lấy những orderItems đã confirmed
                 const confirmedItems = sellerOrderItems.filter(
                     (item) => item?.status === "confirmed"
                 );

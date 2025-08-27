@@ -46,7 +46,6 @@ export default function ListProduct({ onViewDetails }) {
 
   useEffect(() => {
     fetchData();
-    // eslint-disable-next-line
   }, [sellerId]);
 
   const handleProductCreated = () => {
@@ -59,7 +58,7 @@ export default function ListProduct({ onViewDetails }) {
     return inven ? inven.quantity : 0;
   };
 
-  // Filter products
+
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       const matchTitle = product.title
@@ -72,7 +71,7 @@ export default function ListProduct({ onViewDetails }) {
     });
   }, [products, search, filterCategory]);
 
-  // Pagination logic
+
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -83,9 +82,7 @@ export default function ListProduct({ onViewDetails }) {
 
   return (
     <Container fluid className="py-4" style={{ background: "#f8f9fa" }}>
-      {/* Header */}
       <Row className="align-items-center mb-4 g-3">
-        {/* Search */}
         <Col xs={12} md={5}>
           <InputGroup>
             <InputGroup.Text>
@@ -100,7 +97,6 @@ export default function ListProduct({ onViewDetails }) {
           </InputGroup>
         </Col>
 
-        {/* Filter by Category */}
         <Col xs={12} md={4}>
           <Form.Select
             value={filterCategory}
@@ -115,7 +111,6 @@ export default function ListProduct({ onViewDetails }) {
           </Form.Select>
         </Col>
 
-        {/* Create Product Button */}
         <Col xs={12} md={3} className="text-md-end">
           <Button
             variant="primary"
@@ -128,7 +123,7 @@ export default function ListProduct({ onViewDetails }) {
         </Col>
       </Row>
 
-      {/* Product Grid */}
+     
       <Row className="g-4">
         {currentProducts.map((product) => {
           const category =
@@ -139,7 +134,7 @@ export default function ListProduct({ onViewDetails }) {
           return (
             <Col key={product.id} xs={12} sm={6} md={4} lg={3}>
               <Card className="h-100 shadow-sm border-0 rounded-4 position-relative">
-                {/* Hình ảnh */}
+              
                 <div
                   style={{
                     height: "200px",

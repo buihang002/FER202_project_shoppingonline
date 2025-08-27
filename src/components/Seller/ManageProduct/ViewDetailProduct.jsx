@@ -70,7 +70,6 @@ function ViewDetails({ id, onBack }) {
       const prodCategory = categories.find((c) => c.id === res.data.categoryId);
       if (prodCategory) setCategory(prodCategory.name);
 
-      // Cập nhật quantity sau khi edit
       const inventoryRes = await axios.get(
         `http://localhost:9999/inventories?productId=${id}`
       );
