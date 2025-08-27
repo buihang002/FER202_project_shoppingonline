@@ -5,7 +5,7 @@ import axios from "axios";
 const PendingSellers = () => {
   const [pendingSellers, setPendingSellers] = useState([]);
   const [search, setSearch] = useState("");
-  const [sortOrder, setSortOrder] = useState("desc"); // desc: mới nhất
+  const [sortOrder, setSortOrder] = useState("desc");
 
   useEffect(() => {
     fetchPendingSellers();
@@ -13,10 +13,13 @@ const PendingSellers = () => {
 
   const fetchPendingSellers = async () => {
     try {
-      const res = await axios.get("http://localhost:9999/users?role=seller&status=pending");
+      // chỉ lấy role = seller và status = pending
+      const res = await axios.get(
+        "http://localhost:9999/users?role=seller&status=pending"
+      );
       let data = res.data;
 
-      // Sắp xếp theo ngày tạo
+      // sắp xếp theo ngày tạo
       data.sort((a, b) =>
         sortOrder === "desc"
           ? new Date(b.createdAt) - new Date(a.createdAt)
@@ -29,18 +32,36 @@ const PendingSellers = () => {
     }
   };
 
+  // duyệt seller → chuyển status = approved và action = active
   const handleApprove = async (id) => {
     try {
-      await axios.patch(`http://localhost:9999/users/${id}`, { status: "approved" });
+      await axios.patch(`http://localhost:9999/users/${id}`, {
+        status: "approved",
+        action: "active",
+        updatedAt: new Date().toISOString(),
+      });
       fetchPendingSellers();
     } catch (error) {
       console.error("Error approving seller:", error);
     }
   };
 
+  // từ chối seller →  xóa hoặc cập nhật thành rejected+inactive
   const handleReject = async (id) => {
+    const confirmReject = window.confirm("Reject this seller?");
+    if (!confirmReject) return;
+
     try {
-      await axios.delete(`http://localhost:9999/users/${id}`);
+      // Cách 1: XÓA tài khoản
+      // await axios.delete(`http://localhost:9999/users/${id}`);
+
+      // Cách 2: CHỈ CẬP NHẬT TRẠNG THÁI
+      await axios.patch(`http://localhost:9999/users/${id}`, {
+        status: "rejected",
+        action: "inactive",
+        updatedAt: new Date().toISOString(),
+      });
+
       fetchPendingSellers();
     } catch (error) {
       console.error("Error rejecting seller:", error);
@@ -62,7 +83,10 @@ const PendingSellers = () => {
           />
         </Col>
         <Col md={3}>
-          <Form.Select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
+          <Form.Select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)}
+          >
             <option value="desc">Newest First</option>
             <option value="asc">Oldest First</option>
           </Form.Select>
@@ -74,7 +98,6 @@ const PendingSellers = () => {
         </Col>
       </Row>
 
-      {/* Bảng hiển thị */}
       <Table striped bordered hover responsive>
         <thead>
           <tr>

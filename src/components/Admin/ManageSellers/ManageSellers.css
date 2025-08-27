@@ -1,0 +1,28 @@
+.manage-sellers h2 {
+  font-size: 1.6rem;
+}
+
+.table-container {
+  background: white;
+  padding: 1rem;
+}
+
+.table thead th {
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+}
+
+.table tbody tr:hover {
+  background-color: #f9fafb;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.4em 0.6em;
+}
+
+button.btn-sm {
+  font-size: 0.75rem;
+}

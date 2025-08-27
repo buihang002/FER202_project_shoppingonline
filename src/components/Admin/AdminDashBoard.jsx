@@ -44,7 +44,7 @@ const Dashboard = () => {
           complaints: complaintsRes.data.length,
         });
 
-        setLatestUsers(usersRes.data.slice(-5).reverse());
+        setLatestUsers(usersRes.data.slice(-5).reverse()); //5 phần tử cuối cùng
 
         // Lọc complaint có status = pending
         const pending = complaintsRes.data.filter((c) => c.status === "pending");
@@ -68,8 +68,8 @@ const Dashboard = () => {
   }
 
   return (
-    <Container fluid className="mt-4">
-      <h2 className="mb-4">Admin Dashboard</h2>
+    <Container fluid className="">
+      <h2 className="mb-4 fw-bold">Admin Dashboard</h2>
 
       {/* Stats Overview */}
       <Row className="mb-4">
