@@ -69,7 +69,7 @@ const ManageProduct = () => {
 
   return (
     <div className="container ">
-      <h2 className="mb-4 fw-bold">Product Management</h2>
+      <h2 className="mb-3 fw-bold">Product Management</h2>
 
       {/* === Stats Section === */}
       <div className="row mb-4">

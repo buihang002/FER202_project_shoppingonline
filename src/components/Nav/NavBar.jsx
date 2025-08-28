@@ -18,19 +18,19 @@ const NavBar = () => {
       style={{ backgroundColor: "#f8f9fa" }}
     >
       <Container fluid>
-        <Navbar.Brand className="fw-bold " style={{ color: "#343a40" }}>
-          PRODUCT
+        <Navbar.Brand className="fw-bold pe-5" style={{ color: "#343a40" }}>
+          SHOPII
         </Navbar.Brand>
 
         <Nav className="ms-auto d-flex align-items-center">
-          <Button
+          {/* <Button
             variant="outline-danger"
             className="d-flex align-items-center"
             onClick={handleLogout}
           >
             <FiLogOut className="me-2" />
             Logout
-          </Button>
+          </Button> */}
         </Nav>
       </Container>
     </Navbar>

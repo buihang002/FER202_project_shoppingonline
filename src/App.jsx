@@ -19,10 +19,15 @@ import AdminReview from "./components/Admin/AdminReview.jsx";
 import ManageComplaints from "./components/Admin/ManageComplaints/ManageComplaints.jsx";
 import ProductDetailPage from "./components/Admin/ManageProduct/ProductDetails.jsx";
 import ManageProfile from "./components/Admin/ManageProfile/Profile.jsx";
+
 import OrderHistory from './pages/OrderHistory.jsx';
 import Profile from './components/Buyer/Profile.jsx';
 import Addresses from './components/Buyer/Addresses.jsx';
 import CheckoutPage from './pages/CheckoutPage.jsx';
+import ManageSellers from "./components/Admin/ManageSellers/ManageSellers.jsx";
+import SellerProducts from "./components/Admin/ManageSellers/SellerProducts.jsx";
+import StatisticPage from "./components/Admin/ManageStatistic/StatisticPage.jsx";
+import Profile from "./components/Admin/ProfileAdmin/Profile.jsx";
 
 function App() {
   return (
@@ -34,8 +39,9 @@ function App() {
 
         <Route path="/seller/dashboard" element={<SellerDashboard />} />
 
-
         <Route path="/admin" element={<AdminDashboard />}>
+          <Route path="/admin/profile/:userId" element={<Profile />} />
+
           <Route path="/admin/dashboard" element={<Admin />} />
           <Route path="/admin/account" element={<ManageAccount />} />
           <Route path="/admin/product" element={<ManageProduct />} />
@@ -44,13 +50,17 @@ function App() {
           <Route path="order" element={<AdminOrderPage />} />
           <Route path="review" element={<AdminReview />} />
           <Route path="/admin/complaints" element={<ManageComplaints />} />
+
+          <Route path="/admin/sellers" element={<ManageSellers />} />
+          <Route
+            path="/admin/sellers/:id/products"
+            element={<SellerProducts />}
+          />
+          <Route path="/admin/statistic" element={<StatisticPage />} />
         </Route>
-
-
 
         <Route path="/profile/:userId" element={<ManageProfile />} />
         <Route path="/admin/product/:id" element={<ProductDetailPage />} />
-
 
         <Route path="/seller/products" element={<ListProduct />} />
         <Route path="/become-seller" element={<BecomeSeller />} />

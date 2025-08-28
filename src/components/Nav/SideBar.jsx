@@ -8,40 +8,48 @@ import {
   FiLogOut,
   FiClock,
   FiUser,
-  FiAlertCircle, 
+  FiAlertCircle,
+  FiPackage,
+  FiBarChart2,
 } from "react-icons/fi";
 
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const userId = localStorage.getItem("userId");
+  const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+  const userId = currentUser?.id;
 
   const links = [
     { name: "Dashboard", path: "/admin/dashboard", icon: <FiHome /> },
+    userId && {
+      name: "My Profile",
+      path: `/admin/profile/${userId}`,
+      icon: <FiUser />,
+    },
+
     { name: "Manage Account", path: "/admin/account", icon: <FiUsers /> },
-    { name: "Manage Product", path: "/admin/product", icon: <FiBox /> },
     {
       name: "Pending Seller",
       path: "/admin/pending-seller",
-      icon: <FiClock />, 
+      icon: <FiClock />,
     },
-    { 
-      name: "Manage Complaints", 
-      path: "/admin/complaints", 
-      icon: <FiAlertCircle />
+    {
+      name: "Manage Sellers & Shops",
+      path: "/admin/sellers",
+      icon: <FiPackage />,
     },
-    userId && {
-      name: "My Profile",
-      path: `/profile/${userId}`,
-      icon: <FiUser />,
+    { name: "Manage Product", path: "/admin/product", icon: <FiBox /> },
+    {
+      name: "Manage Complaints",
+      path: "/admin/complaints",
+      icon: <FiAlertCircle />,
     },
+    { name: "Statistic", path: "/admin/statistic", icon: <FiBarChart2 /> },
   ].filter(Boolean);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    localStorage.removeItem("userId"); 
+    localStorage.removeItem("currentUser");
     navigate("/login");
   };
 
@@ -69,10 +77,10 @@ const Sidebar = () => {
         ))}
       </Nav>
 
-      <div className="mt-auto d-flex flex-column">
+      <div className="mt-5">
         <Button
           variant="outline-danger"
-          className="d-flex align-items-center justify-content-center mb-5"
+          className="d-flex align-items-center justify-content-center w-100"
           onClick={handleLogout}
         >
           <FiLogOut className="me-2" />
