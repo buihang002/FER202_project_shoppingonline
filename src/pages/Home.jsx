@@ -8,7 +8,7 @@ const Home = () => {
     const [allProducts, setAllProducts] = useState([]);
     const [displayedProducts, setDisplayedProducts] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [users, setUsers] = useState([]); // <-- State mới để lưu danh sách người dùng
+    const [users, setUsers] = useState([]); 
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [sortOption, setSortOption] = useState('default');
     

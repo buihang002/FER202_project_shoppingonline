@@ -12,7 +12,7 @@ const BecomeSeller = () => {
     });
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
 
     // Kiểm tra nếu người dùng chưa đăng nhập hoặc đã là seller/admin
     if (!currentUser || currentUser.role !== 'buyer') {
@@ -48,8 +48,7 @@ const BecomeSeller = () => {
 
             if (!userUpdateResponse.ok) throw new Error('Failed to update user role.');
             const updatedUser = await userUpdateResponse.json();
-            // Cập nhật lại thông tin trong localStorage
-            localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+            sessionStorage.setItem('currentUser', JSON.stringify(updatedUser));
 
 
             // Bước 2: Tạo một cửa hàng mới trong 'stores'
@@ -58,7 +57,7 @@ const BecomeSeller = () => {
                 sellerId: currentUser.id,
                 storeName: formData.storeName,
                 description: formData.description,
-                address: formData.address, // Giả sử địa chỉ là một chuỗi
+                address: formData.address, 
                 bannerImageURL: formData.avatarURL,
                 status: 'pending' // Chờ admin duyệt
             };

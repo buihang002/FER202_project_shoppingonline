@@ -72,7 +72,7 @@ const CartPage = () => {
                                         Select All ({cartDetails.length} items)
                                     </label>
                                 </div>
-                                <button className="btn btn-link text-danger" onClick={clearCart}>
+                                <button className="btn btn-link text-danger" onClick={() => clearCart()}>
                                     <Trash2 size={16} className="me-1" /> CLEAR CART
                                 </button>
                             </div>
@@ -110,9 +110,9 @@ const CartPage = () => {
                                     <span className="text-primary">${orderSummary.total.toFixed(2)}</span>
                                 </div>
                                 <div className="d-grid">
-                                    <button className="btn btn-primary btn-lg" disabled={orderSummary.selectedCount === 0}>
+                                    <Link to="/checkout" className={`btn btn-primary btn-lg ${orderSummary.selectedCount === 0 ? 'disabled' : ''}`}>
                                         PROCEED TO CHECKOUT <ArrowRight size={16} />
-                                    </button>
+                                    </Link>
                                 </div>
                                 <div className="text-center mt-3">
                                     <Link to="/" className="btn btn-link text-primary">

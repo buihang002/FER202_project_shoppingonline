@@ -8,17 +8,19 @@ export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState(null);
     const [cartDetails, setCartDetails] = useState([]);
     const [selectedItems, setSelectedItems] = useState([]);
+    const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('currentUser')));
     const [loading, setLoading] = useState(true);
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    // Hàm để lấy dữ liệu giỏ hàng và chi tiết sản phẩm
-    const fetchCartData = async () => {
-        if (!currentUser) {
+    // Hàm để tải lại dữ liệu giỏ hàng, sẽ được gọi khi đăng nhập/đăng xuất
+    const fetchCartData = async (user) => {
+        if (!user) {
+            setCart(null);
+            setCartDetails([]);
             setLoading(false);
             return;
         }
         try {
-            const cartRes = await fetch(`http://localhost:9999/carts?userId=${currentUser.id}`);
+            const cartRes = await fetch(`http://localhost:9999/carts?userId=${user.id}`);
             const cartData = await cartRes.json();
             
             if (cartData.length > 0) {
@@ -34,11 +36,14 @@ export const CartProvider = ({ children }) => {
                     const details = userCart.items.map(item => {
                         const product = products.find(p => p.id === item.productId);
                         return product ? { ...product, quantity: item.quantity } : null;
-                    }).filter(Boolean); // Lọc bỏ các sản phẩm không tìm thấy
+                    }).filter(Boolean);
                     setCartDetails(details);
                 } else {
                     setCartDetails([]);
                 }
+            } else {
+                setCart(null);
+                setCartDetails([]);
             }
         } catch (error) {
             console.error("Failed to fetch cart data:", error);
@@ -47,9 +52,20 @@ export const CartProvider = ({ children }) => {
         }
     };
 
+    // useEffect này sẽ tự động chạy lại mỗi khi currentUser thay đổi
     useEffect(() => {
-        fetchCartData();
-    }, []);
+        fetchCartData(currentUser);
+    }, [currentUser]);
+
+    const login = (userData) => {
+        sessionStorage.setItem('currentUser', JSON.stringify(userData));
+        setCurrentUser(userData); // Cập nhật state sẽ trigger useEffect ở trên
+    };
+
+    const logout = () => {
+        sessionStorage.removeItem('currentUser');
+        setCurrentUser(null); // Cập nhật state sẽ trigger useEffect ở trên
+    };
 
     const updateCartOnServer = async (cartId, updatedItems) => {
         const response = await fetch(`http://localhost:9999/carts/${cartId}`, {
@@ -60,7 +76,6 @@ export const CartProvider = ({ children }) => {
         return response.json();
     };
 
-    // --- LOGIC ADD TO CART ĐÃ ĐƯỢC VIẾT LẠI HOÀN CHỈNH ---
     const addToCart = async (product) => {
         if (!currentUser) {
             alert('Please log in to add items to your cart.');
@@ -69,40 +84,31 @@ export const CartProvider = ({ children }) => {
 
         const newItem = { productId: product.id, quantity: 1 };
 
-        // Trường hợp 1: Người dùng chưa có giỏ hàng
         if (!cart) {
             const newCartPayload = {
                 id: `cart-${currentUser.id}-${Date.now()}`,
                 userId: currentUser.id,
                 items: [newItem],
             };
-            const response = await fetch('http://localhost:9999/carts', {
+            await fetch('http://localhost:9999/carts', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newCartPayload)
             });
-            await response.json();
-            await fetchCartData(); // Tải lại dữ liệu giỏ hàng
-            alert(`${product.title} has been added to your cart!`);
-            return;
-        }
-
-        // Trường hợp 2: Người dùng đã có giỏ hàng
-        const existingItemIndex = cart.items.findIndex(item => item.productId === product.id);
-        let updatedItems;
-
-        if (existingItemIndex > -1) {
-            // Nếu sản phẩm đã tồn tại, tăng số lượng
-            updatedItems = cart.items.map((item, index) => 
-                index === existingItemIndex ? { ...item, quantity: item.quantity + 1 } : item
-            );
         } else {
-            // Nếu sản phẩm chưa có, thêm vào giỏ
-            updatedItems = [...cart.items, newItem];
+            const existingItemIndex = cart.items.findIndex(item => item.productId === product.id);
+            let updatedItems;
+            if (existingItemIndex > -1) {
+                updatedItems = cart.items.map((item, index) => 
+                    index === existingItemIndex ? { ...item, quantity: item.quantity + 1 } : item
+                );
+            } else {
+                updatedItems = [...cart.items, newItem];
+            }
+            await updateCartOnServer(cart.id, updatedItems);
         }
         
-        await updateCartOnServer(cart.id, updatedItems);
-        await fetchCartData(); // Tải lại dữ liệu giỏ hàng
+        await fetchCartData(currentUser);
         alert(`${product.title} has been added to your cart!`);
     };
 
@@ -111,16 +117,27 @@ export const CartProvider = ({ children }) => {
         const updatedItems = cart.items.map(item => 
             item.productId === productId ? { ...item, quantity: newQuantity } : item
         );
-        updateCartOnServer(cart.id, updatedItems).then(() => fetchCartData());
+        updateCartOnServer(cart.id, updatedItems).then(() => fetchCartData(currentUser));
     };
 
     const removeFromCart = (productId) => {
         const updatedItems = cart.items.filter(item => item.productId !== productId);
-        updateCartOnServer(cart.id, updatedItems).then(() => fetchCartData());
+        updateCartOnServer(cart.id, updatedItems).then(() => fetchCartData(currentUser));
     };
     
-    const clearCart = () => {
-        updateCartOnServer(cart.id, []).then(() => fetchCartData());
+    const clearCart = async (itemsToRemove = null) => {
+        if (!cart) return;
+        let updatedItems;
+        if (itemsToRemove) {
+            updatedItems = cart.items.filter(item => !itemsToRemove.includes(item.productId));
+        } else {
+            updatedItems = [];
+        }
+        await updateCartOnServer(cart.id, updatedItems);
+        await fetchCartData(currentUser);
+        if (itemsToRemove) {
+            setSelectedItems([]);
+        }
     };
 
     const toggleItemSelected = (productId) => {
@@ -153,6 +170,9 @@ export const CartProvider = ({ children }) => {
     const itemCount = cart?.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
 
     const value = {
+        currentUser,
+        login,
+        logout,
         cart,
         cartDetails,
         itemCount,

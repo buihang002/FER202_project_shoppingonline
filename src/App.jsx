@@ -19,6 +19,10 @@ import AdminReview from "./components/Admin/AdminReview.jsx";
 import ManageComplaints from "./components/Admin/ManageComplaints/ManageComplaints.jsx";
 import ProductDetailPage from "./components/Admin/ManageProduct/ProductDetails.jsx";
 import ManageProfile from "./components/Admin/ManageProfile/Profile.jsx";
+import OrderHistory from './pages/OrderHistory.jsx';
+import Profile from './components/Buyer/Profile.jsx';
+import Addresses from './components/Buyer/Addresses.jsx';
+import CheckoutPage from './pages/CheckoutPage.jsx';
 
 function App() {
   return (
@@ -52,6 +56,11 @@ function App() {
         <Route path="/become-seller" element={<BecomeSeller />} />
         <Route path="/product/:productId" element={<ProductDetail />} />
         <Route path="/cart" element={<CartPage />} />
+        
+        <Route path="/order-history" element={<OrderHistory />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/addresses" element={<Addresses />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
       </Routes>
     </Router>
   );
